@@ -1,0 +1,10 @@
+.sidebar {
+  background-color: aqua;
+  width: 0%;
+  min-height: 90vh;
+  transition: 0.5s;
+  overflow: hidden;
+  &.active {
+    width: 20%;
+  }
+}
