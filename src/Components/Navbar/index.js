@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { useGeneralContext } from '../Context/GeneralContext';
 import './navbar.scss'
 function Navbar() {
@@ -8,6 +9,11 @@ function Navbar() {
   setIsSidebarActive(!isSidebarActive);
     console.log(isSidebarActive);
   }
+  const myDispatch = useDispatch();
+
+  const handleLogOut =()=>{
+    myDispatch({type:'LOGOUT'})
+  }
 
   return (
     <div className='navbar'>
@@ -16,7 +22,9 @@ function Navbar() {
             <img src="" alt="" />
            <button onClick={handleMenuClick} >Menu</button> 
            </div>
-           <div className='navbar_container_boxRight'>b</div>
+           <div className='navbar_container_boxRight'>
+            <button onClick={handleLogOut}>Log Out</button>
+           </div>
         </div>
     </div>
   )
