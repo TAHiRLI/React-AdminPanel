@@ -23,7 +23,7 @@ const loginReducer = (state=defaultState, action)=>{
                 ...state, 
                 isAuthenticated: false,
                 isAuthorized:false,
-                userRole:""
+                userRole:"  "
             }
     
         default:

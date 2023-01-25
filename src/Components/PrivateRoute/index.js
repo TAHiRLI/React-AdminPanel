@@ -15,18 +15,14 @@ function PrivateRoute({ component: Component, ...rest }) {
     // using redux here
    
 
-    const myDispatch = useDispatch();
+    // const myDispatch = useDispatch();
     
     
-    React.useEffect(()=>{
-        myDispatch({type: 'SUBMIT_LOGIN', userRole:"tahir"})
-    },[])
+    // React.useEffect(()=>{
+    //     myDispatch({type: 'SUBMIT_LOGIN', userRole:"tahir"})
+    // },[])
     const {isAuthenticated, isAuthorized, userRole} = useSelector(state => state);
-        
         console.log(isAuthenticated, isAuthorized, userRole)
-    
-
-
     return (
         
         <Route
@@ -37,12 +33,9 @@ function PrivateRoute({ component: Component, ...rest }) {
                         <Component {...props} />)
                     :
                     (
-                        // <Redirect to={ROUTES.LOGIN}
-                        //     exact />
-                        <div>redirect
-
-                            
-                        </div>
+                        <Redirect to={{
+                           pathname: ROUTES.LOGIN,
+                        }} exact />
                     )
             }
         />

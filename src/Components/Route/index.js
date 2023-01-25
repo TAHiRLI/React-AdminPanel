@@ -6,6 +6,7 @@ import {
     Link
 } from "react-router-dom";
 import { ROUTES } from '../../Consts/Routes';
+import JwtRoute from '../JwtRoute/JwtRoute';
 import Layout from '../Layout/index';
 import Login from '../Login';
 import PrivateRoute from '../PrivateRoute';
@@ -25,6 +26,7 @@ function Routes() {
                 <Route path={ROUTES.LOGIN} exact>
                     <Login />
                 </Route>
+                <JwtRoute path="/jwt" component={Layout} exact/>
             </Switch>
         </Router>
     );
