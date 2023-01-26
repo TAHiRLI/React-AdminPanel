@@ -1,12 +1,12 @@
-import { HttpClient } from "../HttpClient/httpClient";
+import  {HttpClient } from "../HttpClient/httpClient";
 
 class loginService extends HttpClient{
 constructor() {
     super("https://localhost:7057/admin/api/Accounts");
 }
 
-async SubmitLogin(body,config){
-   return await this.post('login', body,config)
+async SubmitLogin(body){
+   return await this.post('login', body)
 }
 async CheckAuth(token){
     return await this.get('isAuthenticated', {

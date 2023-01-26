@@ -4,7 +4,8 @@ import {  createStore } from "redux";
 const defaultState ={
     isAuthorized: false,
     isAuthenticated: false,
-    userRole : ""
+    userRole : "",
+    isLoading: false
 }
 
 const loginReducer = (state=defaultState, action)=>{
@@ -25,6 +26,16 @@ const loginReducer = (state=defaultState, action)=>{
                 isAuthorized:false,
                 userRole:"  "
             }
+            case "LOADED":
+                return {
+                    ...state, 
+                    isLoading: false
+                }
+                case "LOADING":
+                    return {
+                        ...state, 
+                        isLoading: true
+                    }
     
         default:
             return state

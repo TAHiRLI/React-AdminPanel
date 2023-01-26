@@ -1,29 +1,58 @@
 
 
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
-import { LoginService } from '../../APIs/LoginService';
-import { ROUTES } from '../../Consts/Routes';
-let token = "3eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiVGFoaXJBZG1pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IlRhaGlyQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiYWQ4MTEwYWMtMzFhNi00M2NkLWIxZjUtOWYyOWU3N2MxOGJjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXJBZG1pbiIsImV4cCI6MTY3NDY1OTM1MSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzA1Ny8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDU3LyJ9.D2r-YBzqQjk0pDvb0SkYvHnFXOJgbyBVfyEijmWhFL8";
+import { LoginService } from '../../APIs/Services/LoginService';
+
+
+
 function JwtRoute({ component: Component, ...rest }) {
-    // LoginService.SubmitLogin({ username: "TahirAdmin", password: "admin123" }, {}).then(data => console.log(data.data.token));
-    const [statusCode, setStatusCode] = React.useState(401);
+    let token = JSON.parse(sessionStorage.getItem("token")) 
+    const {isLoading}  = useSelector(state => state);
+    const myDispatch = useDispatch();
+    const [statusCode, setStatusCode] = React.useState()
     
-
-    const CheckAuth = React.useCallback(()=>{
-          LoginService.CheckAuth(token).then(data=>{
-            setStatusCode(data.status)
-        } )
-    })
-     
+    
+    let isMounted = useRef(true)
     React.useEffect(()=>{
-        CheckAuth();
-    },[statusCode])
-   
 
-    return (
-        <Route {...rest} render={(props) => statusCode == 204? (<Component />): (<Redirect to={ROUTES.LOGIN}/>)} />
+        myDispatch({type: "LOADING"})
+        LoginService.CheckAuth(token).then((data)=>{
+            if(isMounted.current){
+                setStatusCode(data.status)
+                console.log("data status is", data.status)
+            }
+     }).catch(error => {
+        setStatusCode(401)
+        console.log(error)
+     })
+     .finally(()=>{
+         myDispatch({type: "LOADED"})
+     } )
+
+     return ()=>{
+        isMounted.current = false;
+     }
+     },[ ])
+
+
+   if(isLoading || statusCode == undefined){
+    return <div> Loading ...</div>
+   }
+   console.log(statusCode)
+   if(statusCode == 204){
+      return (
+        <Route {...rest} render={(props) =>  (<Component />)} />
     );
-}
+   }
+   else{
+       console.log("worked")
+       console.log(isLoading)
+       return <Redirect to={"/login"}/>
+       return <div>return else</div>
 
+   }
+  
+}
 export default JwtRoute;

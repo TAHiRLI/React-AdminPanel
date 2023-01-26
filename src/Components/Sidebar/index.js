@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../../Consts/Routes';
 import { useGeneralContext } from '../Context/GeneralContext';
 import "./sidebar.scss"
 function Sidebar() {
@@ -16,7 +18,12 @@ function Sidebar() {
         }
     },[isSidebarActive])
   return (
-    <aside id='sidebar' className='sidebar'>Sidebar</aside>
+    <div id='sidebar' className='sidebar'>Sidebar
+    <ul>
+      <li><Link to={ROUTES.CATEGORIES}>Categories</Link></li>
+      <li><Link to={"/"}>Product</Link></li>
+    </ul>
+    </div>
   )
 }
 

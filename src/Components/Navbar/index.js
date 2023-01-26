@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useGeneralContext } from '../Context/GeneralContext';
 import './navbar.scss'
 function Navbar() {
@@ -9,10 +10,11 @@ function Navbar() {
   setIsSidebarActive(!isSidebarActive);
     console.log(isSidebarActive);
   }
-  const myDispatch = useDispatch();
 
+  const {push} = useHistory();
   const handleLogOut =()=>{
-    myDispatch({type:'LOGOUT'})
+    sessionStorage.removeItem('token')
+    window.location.reload();
   }
 
   return (

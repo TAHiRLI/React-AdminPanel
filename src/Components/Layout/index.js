@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Navbar from '../Navbar/index';
 import Sidebar from '../Sidebar';
-function Layout() {
+function Layout({content : Component, ...rest}) {
   return (
     <div>
       <Navbar />
-      <Sidebar />
+      <div className='row'>
+        <div className=''> <Sidebar /></div>
+        <div className=''> <Component/></div>
+      </div>
+       
+       
     </div>
   );
 }

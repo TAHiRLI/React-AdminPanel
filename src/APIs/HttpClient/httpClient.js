@@ -13,10 +13,11 @@ export class HttpClient{
     async post(endpoint, body,config){
         return await axios.post(`${this.baseUrl}/${endpoint}`, body,config);
     }
-    async put(endpoint, id, body){
-        return await axios.put(`${this.baseUrl}/${endpoint}/${id}`, body);
+    async put(endpoint, id, body, config){
+        console.log(body)
+        return await axios.put(`${this.baseUrl}/${endpoint}/${id}`,body, config);
     }
-    async delete(endpoint, id){
-        return await axios.delete(`${this.baseUrl}/${endpoint}/${id}`)
+    async delete(endpoint, id,config){
+        return await axios.delete(`${this.baseUrl}/${endpoint}/${id}`, config)
     }
 }
