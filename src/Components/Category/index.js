@@ -16,7 +16,6 @@ function CategoryList() {
     const [editModel, setEditModel] = React.useState({});
 
     const [isCreateShow, invokeCreateModal] = React.useState(false);
-    const [createModel, setCreateModel] = React.useState({});
     // ==================
     // Funcitons 
     // ==================

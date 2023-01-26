@@ -21,7 +21,7 @@ function Sidebar() {
     <div id='sidebar' className='sidebar'>Sidebar
     <ul>
       <li><Link to={ROUTES.CATEGORIES}>Categories</Link></li>
-      <li><Link to={"/"}>Product</Link></li>
+      <li><Link to={ROUTES.PRODUCTS}>Product</Link></li>
     </ul>
     </div>
   )

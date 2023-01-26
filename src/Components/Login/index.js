@@ -22,11 +22,6 @@ function Login() {
         })
     };
     
-    // if(isSucceed){
-    //     console.log("cladlidi")
-    //     return <Redirect to={"/jwt"}/>
-    // }
-  
          return (
      
         <div className='col-md-6 m-auto'>

@@ -1,6 +1,6 @@
 import { HttpClient } from "../HttpClient/httpClient";
 
-class categoryService extends HttpClient{
+class productService extends HttpClient{
 constructor() {
     super(`https://localhost:7057/admin/api`);
 }
@@ -8,7 +8,7 @@ constructor() {
 
 
 async getAll(){
-    return await this.get(`categories/all`, {
+    return await this.get(`products/all`, {
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }
@@ -16,14 +16,14 @@ async getAll(){
 }
 
 async getById(id){
-    return  await this.get(`categories/${id}`,{
+    return  await this.get(`products/${id}`,{
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }} )
 }
 
 async edit(id, body){
-    return await this.put(`Categories` , id,body,
+    return await this.put(`products` , id,body,
     {
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
@@ -32,13 +32,13 @@ async edit(id, body){
 }
 
 async create(body){
-    return await this.post('Categories' , body, {
+    return await this.post('products' , body, {
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }} )
 }
-async deleteCategory (id){
-    return await this.delete("Categories",id, {
+async deleteProduct (id){
+    return await this.delete("products",id, {
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }});
@@ -47,4 +47,4 @@ async deleteCategory (id){
 }
 
 
-export const CategoryService = new categoryService();
+export const ProductService = new productService();
