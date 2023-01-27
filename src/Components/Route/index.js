@@ -10,7 +10,6 @@ import CategoryList from '../Category';
 import JwtRoute from '../JwtRoute/JwtRoute';
 import Layout from '../Layout/index';
 import Login from '../Login';
-import PrivateRoute from '../PrivateRoute';
 import ProductList from '../Product';
 
 function Routes() {

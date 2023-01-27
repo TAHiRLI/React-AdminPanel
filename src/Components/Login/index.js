@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Redirect, useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { LoginService } from '../../APIs/Services/LoginService';
 
 function Login() {
@@ -17,8 +18,15 @@ function Login() {
             if(res.status == 200){
                 sessionStorage.setItem("token", JSON.stringify(res.data.token) )
                 setIsSucceed(true);
-                
             }
+         
+        })
+        .catch(err=>{
+            Swal.fire({
+                title: 'Error!',
+                text: 'Username or password is incorrect',
+                icon: 'error',
+              })
         })
     };
     

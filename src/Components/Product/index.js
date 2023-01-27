@@ -1,20 +1,23 @@
 import React from 'react';
 import { ProductService } from '../../APIs/Services/ProductService';
 import { Modal, Button } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 function ProductList() {
-
-  const { register, handleSubmit, formState: { errors } } = useForm();
-
+  const { register, handleSubmit, formState: { errors }, setValue, control , setError, clearErrors} = useForm({
+    defaultValues: {
+      StockStatus: false
+    }
+  });
+  // const { register, handleSubmit, errors } = useController();
   // ==================
   // States 
   // ==================
   const [products, setProducts] = React.useState([]);
 
+
   const [isEditShow, invokeEditModal] = React.useState(false);
   const [editModel, setEditModel] = React.useState({});
-
   const [isCreateShow, invokeCreateModal] = React.useState(false);
   // ==================
   // Funcitons 
@@ -24,37 +27,37 @@ function ProductList() {
   //Create
 
   const initCreateModal = () => {
+    setValue("name", "");
+    setValue("CostPrice", "");
+    setValue("SalePrice", "");
+    setValue("DiscountPercent", "");
+    setValue("CategoryId", "");
+    setValue("id", "");
+    setValue("StockStatus", "");
+
     return invokeCreateModal(!isCreateShow);
   };
 
   const create_OnSubmit = (data) => {
     let closeModal = false;
-    // let body = {
-    //   Name: data.name,
-    //   costPrice: data.CostPrice,
-    //   salePrice:data.SalePrice,
-    //   discountPercent:data.DiscountPercent,
-    //   imageFile:data.ImageFile[0],
-    //   categoryId: data.CategoryId,
-    //   stockStatus: data.StockStatus
-    // };
-
-    const formData = new FormData()
+    const formData = new FormData();
     formData.append("ImageFile", data.ImageFile[0]);
-    formData.append("name", data.name)
-    formData.append("costPrice", data.CostPrice)
-    formData.append("salePrice", data.SalePrice)
-    formData.append("discountPercent", data.DiscountPercent)
-    formData.append("categoryId", data.CategoryId)
-    formData.append("stockStatus", data.StockStatus)
-    console.log(formData);
+    formData.append("name", data.name);
+    formData.append("costPrice", data.CostPrice);
+    formData.append("salePrice", data.SalePrice);
+    formData.append("discountPercent", data.DiscountPercent);
+    formData.append("categoryId", data.CategoryId);
+    formData.append("stockStatus", data.StockStatus);
+
+
     ProductService.create(formData).then(response => {
-      console.log("response", response);
     })
       .catch(err => {
+    // clearErrors() need to invoked manually to remove that custom error 
+
         closeModal = true;
         let errors = err?.response?.data?.errors?.Name;
-        errors.forEach(element => {
+        errors?.forEach(element => {
           console.log(element);
         });
         alert(errors[0]);
@@ -71,34 +74,45 @@ function ProductList() {
   const initEditModal = () => {
     return invokeEditModal(!isEditShow);
   };
-  const openEditModal = (e) => {
-    let name = e.target.getAttribute("edititem");
-    let id = e.target.getAttribute("editid");
-    initEditModal();
-    setEditModel(
-      {
-        id: id,
-        body: {
-          name: name
-        }
-      });
+  const openEditModal = async (id) => {
+    clearErrors()
+
+    invokeEditModal(true);
+    let product = await ProductService.getById(id);
+
+    setEditModel(product.data[0]);
+
   };
   const edit_OnSubmit = (data) => {
+    let stayOpened= false;
 
-    invokeEditModal(false);
-    console.log("editdata", data);
-    let body = {
-      name: data.name
-    };
-    ProductService.edit(editModel?.id, body).then(response => {
-      console.log(response);
+    let formData = new FormData();
+    if (data.ImageFile[0] !== undefined) {
+      formData.append("ImageFile", data.ImageFile[0]);
+    }
+    else {
+      formData.append("ImageFile", null);
+    }
+    formData.append("id", data.name);
+    formData.append("name", data.name);
+    formData.append("costPrice", data.CostPrice);
+    formData.append("salePrice", data.SalePrice);
+    formData.append("discountPercent", data.DiscountPercent);
+    formData.append("categoryId", data.CategoryId);
+    formData.append("stockStatus", data.StockStatus);
+
+    ProductService.edit(data.id, formData).then(response => {
     })
       .catch(err => {
+        setError("name", { type: "custom" }, { shouldFocus: true });
+        stayOpened= true
         alert(err);
         console.log(err);
       })
       .finally(() => {
         getAllProducts();
+       invokeEditModal(stayOpened);
+
       });
   };
 
@@ -130,6 +144,23 @@ function ProductList() {
     getAllProducts();
   }, []);
 
+  React.useEffect(() => {
+    if (editModel) {
+      setValue("id", editModel.id);
+      setValue("name", editModel.name);
+      setValue("CostPrice", editModel.costPrice);
+      setValue("SalePrice", editModel.salePrice);
+      setValue("DiscountPercent", editModel.discountPercent);
+      setValue("StockStatus", editModel.stockStatus);
+      setValue("CategoryId", editModel.categoryId);
+
+    }
+  }, [editModel, isEditShow]);
+
+
+
+  //
+
 
 
   // Data validation rules
@@ -139,6 +170,7 @@ function ProductList() {
     <div className='d-flex justify-content-center '>
       <div className='text-end'>
         <Button onClick={initCreateModal}>Create</Button>
+
       </div>
       <table className='table table-light'>
         <thead>
@@ -168,7 +200,7 @@ function ProductList() {
                 <td>{item.discountPercent}</td>
                 <td>{item.stockStatus ? (<div className='badge bg-success'>true</div>) : (<div className='badge bg-danger'>false</div>)}</td>
                 <td>
-                  <button onClick={openEditModal} className='badge bg-info mx-2 ' editid={item.id} edititem={item.name}>edit</button>
+                  <button onClick={() => openEditModal(item.id)} className='badge bg-info mx-2 '>edit</button>
                   <button onClick={deleteProduct} className='badge bg-danger ' deleteid={item.id}>delete</button>
                 </td>
               </tr>
@@ -189,19 +221,78 @@ function ProductList() {
           <form id='editCategory' onSubmit={handleSubmit(edit_OnSubmit)} >
             <input type="hidden"
               {...register("id")}
-              defaultValue={editModel?.id}
             />
+
             <input
-              defaultValue={editModel?.body?.name}
-              placeholder="Category Name"
+              placeholder="Product Name"
               className='form-control mt-2'
               aria-invalid={errors.name ? "true" : "false"}
               {...register("name", { required: "this field is required", maxLength: Name_maxlength })}
             />
+
+            {errors.name && <p>{errors.name.message} and some</p>}
+
+            {errors.name && errors.name.type === "custom" && <small className='text-danger' role="alert">{errors?.name?.message}</small>}
             {errors.name && errors.name.type === "required" && <small className='text-danger' role="alert">{errors?.name?.message}</small>}
             {errors.name && errors.name.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Name_maxlength} characters</small>}
+            {/* Cost Price Input */}
+            <input
+              type="number"
+              placeholder="cost Price"
+              className='form-control mt-2'
+              aria-invalid={errors.CostPrice ? "true" : "false"}
+              {...register("CostPrice", { required: "this field is required", min: 0 })}
+            />
+            {errors?.CostPrice && <div>Problem</div>}
 
 
+            {/* Sale Price Input */}
+            <input
+              type="number"
+              placeholder="sale Price"
+              className='form-control mt-2'
+              aria-invalid={errors.SalePrice ? "true" : "false"}
+              {...register("SalePrice", { required: "this field is required", min: 0 })}
+            />
+            {errors?.SalePrice && <div>Problem</div>}
+
+
+            {/* discount Percent Input */}
+            <input
+              type="number"
+              placeholder="Discount percent"
+              className='form-control mt-2'
+              aria-invalid={errors.DiscountPercent ? "true" : "false"}
+              {...register("DiscountPercent", { required: "this field is required", min: 0, max: 100 })}
+            />
+            {errors?.DiscountPercent && <div>Problem</div>}
+
+            {/* Stock status */}
+            <input
+              type="checkbox"
+              placeholder="StockStatus"
+              {...register("StockStatus", {required:false})}
+
+            />
+            {errors?.StockStatus && <div>Problem</div>}
+      
+            {/* image */}
+            <input
+              type="file"
+              className='form-control mt-2'
+              aria-invalid={errors.ImageFile ? "true" : "false"}
+              {...register("ImageFile", { required: false })}
+            />
+            {errors?.ImageFile && <div>Problem</div>}
+
+            <input
+              type="number"
+              placeholder="CategoryId"
+              className='form-control mt-2'
+              aria-invalid={errors.CategoryId ? "true" : "false"}
+              {...register("CategoryId", { required: "this field is required", })}
+            />
+            {errors?.CategoryId && <div>Problem</div>}
 
           </form>
         </Modal.Body>
@@ -265,7 +356,7 @@ function ProductList() {
               placeholder="StockStatus"
               className=''
               aria-invalid={errors.StockStatus ? "true" : "false"}
-              {...register("StockStatus", { required: "this field is required", })}
+              {...register("StockStatus", { required: false, })}
             />
 
             {/* image */}
@@ -273,7 +364,7 @@ function ProductList() {
               type="file"
               className='form-control mt-2'
               aria-invalid={errors.ImageFile ? "true" : "false"}
-              {...register("ImageFile", { required: false  })}
+              {...register("ImageFile", { required: false })}
             />
 
             <input
