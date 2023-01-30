@@ -22,6 +22,7 @@ function Sidebar() {
     <ul>
       <li><Link to={ROUTES.CATEGORIES}>Categories</Link></li>
       <li><Link to={ROUTES.PRODUCTS}>Product</Link></li>
+      <li><Link to={ROUTES.SETTINGS}>Settings</Link></li>
     </ul>
     </div>
   )

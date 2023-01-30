@@ -1,8 +1,10 @@
 export const ROUTES ={
+    BASE_URL:"https://localhost:7052/api/Accounts",
     DASHBOARD:{
         MAIN_PATH: "/admin"
     },
     CATEGORIES:"/Categories",
     LOGIN:"/login",
-    PRODUCTS:"/Products"
+    PRODUCTS:"/Products",
+    SETTINGS:"/Settings"
 }

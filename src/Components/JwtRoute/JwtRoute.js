@@ -4,6 +4,7 @@ import React, { Component, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { LoginService } from '../../APIs/Services/LoginService';
+import { ROUTES } from '../../Consts/Routes';
 
 
 
@@ -41,7 +42,7 @@ function JwtRoute({ component: Component, ...rest }) {
     return <div> Loading ...</div>
    }
    console.log(statusCode)
-   if(statusCode == 204){
+   if(statusCode == 200){
       return (
         <Route {...rest} render={(props) =>  (<Component />)} />
     );
@@ -49,8 +50,7 @@ function JwtRoute({ component: Component, ...rest }) {
    else{
        console.log("worked")
        console.log(isLoading)
-       return <Redirect to={"/login"}/>
-       return <div>return else</div>
+       return <Redirect to={ROUTES.LOGIN}/>
 
    }
   
