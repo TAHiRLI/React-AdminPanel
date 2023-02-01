@@ -2,7 +2,7 @@ import { HttpClient } from "../HttpClient/httpClient";
 
 class settingService extends HttpClient{
 constructor() {
-    super(`https://localhost:7052/api`);
+    super(`https://localhost:44317/api`);
 }
 
 async getAll(){

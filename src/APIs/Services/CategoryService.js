@@ -2,7 +2,7 @@ import { HttpClient } from "../HttpClient/httpClient";
 
 class categoryService extends HttpClient{
 constructor() {
-    super(`https://localhost:7057/admin/api`);
+    super(`https://localhost:44317/admin/api`);
 }
 
 

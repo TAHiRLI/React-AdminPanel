@@ -2,7 +2,7 @@ import { HttpClient } from "../HttpClient/httpClient";
 
 class productService extends HttpClient{
 constructor() {
-    super(`https://localhost:7052/api/Accounts`);
+    super(`https://localhost:44317/api/Accounts`);
 }
 
 

@@ -18,13 +18,34 @@ function Sidebar() {
         }
     },[isSidebarActive])
   return (
-    <div id='sidebar' className='sidebar'>Sidebar
-    <ul>
-      <li><Link to={ROUTES.CATEGORIES}>Categories</Link></li>
-      <li><Link to={ROUTES.PRODUCTS}>Product</Link></li>
-      <li><Link to={ROUTES.SETTINGS}>Settings</Link></li>
-    </ul>
+    // <div id='sidebar' className='sidebar'>Sidebar
+    // <ul>
+    //   <li><Link to={ROUTES.CATEGORIES}>Categories</Link></li>
+    //   <li><Link to={ROUTES.PRODUCTS}>Product</Link></li>
+    //   <li><Link to={ROUTES.SETTINGS}>Settings</Link></li>
+    // </ul>
+    // </div>
+
+    <div className="">
+        <div className="d-flex  flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+            <a href="/" className="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <span className="fs-5 d-none d-sm-inline">Menu</span>
+            </a>
+            <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                <li className="nav-item ">
+                    <Link to={ROUTES.SETTINGS} className="nav-link align-middle px-0">
+                        <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Settings</span>
+                    </Link>
+                </li>
+         
+            </ul>
+         
+        </div>
     </div>
+   
+
+
+   
   )
 }
 

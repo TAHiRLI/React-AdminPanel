@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { Redirect, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { LoginService } from '../../APIs/Services/LoginService';
-import '../../Styles/main.scss';
-import "../../Styles/util.scss";
+import '../Login/main.scss';
+import "../Login/util.scss";
 import "material-design-iconic-font/dist/css/material-design-iconic-font.min.css";
 import { ROUTES } from '../../Consts/Routes';
 
