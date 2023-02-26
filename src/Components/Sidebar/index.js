@@ -18,13 +18,7 @@ function Sidebar() {
         }
     },[isSidebarActive])
   return (
-    // <div id='sidebar' className='sidebar'>Sidebar
-    // <ul>
-    //   <li><Link to={ROUTES.CATEGORIES}>Categories</Link></li>
-    //   <li><Link to={ROUTES.PRODUCTS}>Product</Link></li>
-    //   <li><Link to={ROUTES.SETTINGS}>Settings</Link></li>
-    // </ul>
-    // </div>
+
 
     <div className="">
         <div className="d-flex  flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
@@ -35,6 +29,9 @@ function Sidebar() {
                 <li className="nav-item ">
                     <Link to={ROUTES.SETTINGS} className="nav-link align-middle px-0">
                         <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Settings</span>
+                    </Link>
+                    <Link to={ROUTES.ProductCategories} className="nav-link align-middle px-0">
+                        <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Product Categories</span>
                     </Link>
                 </li>
          

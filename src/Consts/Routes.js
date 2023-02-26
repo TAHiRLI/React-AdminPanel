@@ -6,5 +6,6 @@ export const ROUTES ={
     CATEGORIES:"/Categories",
     LOGIN:"/login",
     PRODUCTS:"/Products",
-    SETTINGS:"/Settings"
+    SETTINGS:"/Settings",
+    ProductCategories:"/ProductCategories"
 }
