@@ -6,6 +6,7 @@ import {
     Link
 } from "react-router-dom";
 import { ROUTES } from '../../Consts/Routes';
+import BlogList from '../Blog';
 import CategoryList from '../Category';
 import JwtRoute from '../JwtRoute/JwtRoute';
 import Layout from '../Layout/index';
@@ -18,18 +19,17 @@ function Routes() {
     return (
         <Router>
             <Switch>
-                <Route path={ROUTES.DASHBOARD.MAIN_PATH} exact>
-                    <Layout content={SettingList} />
-                </Route>
-             
                 <Route path={ROUTES.LOGIN} exact>
                     <Login />
                 </Route>
-                <JwtRoute path="/jwt" component={()=><Layout content={SettingList}/>} exact/>
-                <JwtRoute path={ROUTES.CATEGORIES} component={()=><Layout content={CategoryList}/>} exact/>
-                <JwtRoute path={ROUTES.ProductCategories} component={()=><Layout content={ProductCategoryList}/>} exact/>
-                <JwtRoute path={ROUTES.PRODUCTS} component={()=><Layout content={ProductList}/>} exact/>
-                <JwtRoute path ={ROUTES.SETTINGS} component={()=><Layout content={SettingList}/>} exact/>
+                <JwtRoute path={ROUTES.DASHBOARD.MAIN_PATH} exact>
+                    <div> Dashboard here</div>
+                </JwtRoute>
+
+                <JwtRoute path={ROUTES.SETTINGS} component={() => <Layout content={SettingList} />} exact />
+                <JwtRoute path={ROUTES.ProductCategories} component={() => <Layout content={ProductCategoryList} />} exact />
+                <JwtRoute path={ROUTES.BLOGS} component={() => <Layout content={BlogList} />} exact />
+
             </Switch>
         </Router>
     );
