@@ -2,6 +2,10 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Modal, Button } from 'react-bootstrap';
 import { ProductCategoryService } from '../../APIs/Services/ProductCategoryService';
+import ReactPaginate from 'react-paginate';
+import Swal from 'sweetalert2'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronRight,faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 
 
 function ProductCategoryList() {
@@ -16,9 +20,9 @@ function ProductCategoryList() {
   const [isEditShow, invokeEditModal] = React.useState(false);
   const [editModel, setEditModel] = React.useState({});
 
-
   const [isCreateShow, invokeCreateModal] = React.useState(false);
 
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   // ==================
   // Funcitons 
@@ -89,15 +93,41 @@ function ProductCategoryList() {
 
 
   //Delete
-  const deleteCategory = (e) => {
-    alert("are You Sure");
-    let itemId = e.target.getAttribute("deleteid");
-    ProductCategoryService.deleteCategory(itemId).then(() => {
-      getAllCategories();
-    });
+  const deleteCategory = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        ProductCategoryService.deleteCategory(id).then(() => {
+          getAllCategories();
+        });
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
+   
   };
 
-
+//Pagination
+const handlePageChange = (data) => {
+  const selectedPage = data.selected + 1;
+  setCurrentPage(selectedPage);
+};
+const itemsPerPage = 2;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const categoriesToDisplay = productCategories.slice(startIndex, endIndex);
+  
+let order = startIndex+1;
 
   // ==================
   // hooks 
@@ -132,40 +162,63 @@ function ProductCategoryList() {
 
 
   return (
-    <div className='d-flex justify-content-center '>
+    <div className='d-flex justify-content-center flex-column '>
       <div className='text-end'>
-        <Button onClick={initCreateModal}>Create</Button>
+        <Button onClick={initCreateModal}><FontAwesomeIcon icon={faSquarePlus}/></Button>
       </div>
-      <table className='table table-light'>
+      <table className='table table-light overflow-scroll'>
         <thead>
           <tr>
             <th>No</th>
             <th>Id</th>
             <th>Name</th>
-            <th>Action</th>
+            <th className='text-center'>Action</th>
           </tr>
         </thead>
         <tbody>
           {
-            productCategories.map(item => (
+            categoriesToDisplay.map(item => (
 
-              <tr key={item.id}>
-                <td>#</td>
+              <tr className='text-nowrap' key={item.id}>
+                <td>{order++}</td>
                 <td>{item.id}</td>
                 <td>{item.name}</td>
-                <td>
-                  <button onClick={() => openEditModal(item.id)} className='badge bg-info mx-2 ' >edit</button>
-                  <button onClick={deleteCategory} className='badge bg-danger ' deleteid={item.id}>delete</button>
+                <td className='d-flex justify-content-center'>
+                  <button  onClick={() => openEditModal(item.id)} className='btn btn-info mx-2 ' ><i className='zmdi zmdi-edit'></i></button>
+                  <button  onClick={()=> deleteCategory(item.id)} className='btn btn-danger ' ><i className='zmdi zmdi-delete'></i></button>
                 </td>
               </tr>
+
+              
             ))
           }
 
         </tbody>
       </table>
 
+      {/* Pagination */}
 
-      {/* edit */}
+      <br></br>
+        <div>
+
+      <ReactPaginate
+        pageCount={Math.ceil(productCategories.length/itemsPerPage)}
+        onPageChange={handlePageChange}
+      containerClassName="pagination justify-content-center"
+      pageClassName="page-item"
+      pageLinkClassName="page-link"
+      activeClassName="active"
+      previousClassName="page-item"
+      nextClassName="page-item"
+      previousLinkClassName="page-link"
+      nextLinkClassName="page-link"
+      disabledClassName="disabled"
+      previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
+      nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
+      />
+        </div>
+
+      {/* Edit Modal*/}
 
       <Modal show={isEditShow}>
         <Modal.Header closeButton onClick={initEditModal}>
@@ -228,6 +281,9 @@ function ProductCategoryList() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+
+
 
 
     </div>
