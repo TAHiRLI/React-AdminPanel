@@ -1,6 +1,6 @@
 import { HttpClient } from "../HttpClient/httpClient";
 
-class blogService extends HttpClient{
+class productReviewService extends HttpClient{
 constructor() {
     super(`https://localhost:44317/api`);
 }
@@ -8,7 +8,7 @@ constructor() {
 
 
 async getAll(){
-    return await this.get(`Blogs/all`, {
+    return await this.get(`ProductReviews/all`, {
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }
@@ -16,17 +16,21 @@ async getAll(){
 }
 
 async getById(id){
-    return  await this.get(`Blogs/${id}`,{
+    return  await this.get(`ProductReviews/${id}`,{
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }} )
 }
 
+async reject (id){
+    return await this.delete("ProductReviews/Reject",id, {
+        headers:{
+            authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
+        }});
+}
 
-
-
-async delete (id){
-    return await this.delete("Blogs",id, {
+async approve (id){
+    return await this.put("ProductReviews/Approve",id, {
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }});
@@ -35,4 +39,4 @@ async delete (id){
 }
 
 
-export const BlogService = new blogService();
+export const ProductReviewService = new productReviewService();

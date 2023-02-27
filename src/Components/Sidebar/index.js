@@ -27,13 +27,16 @@ function Sidebar() {
             </a>
             <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                 <li className="nav-item ">
-                    <Link to={ROUTES.SETTINGS} className="nav-link align-middle px-0">
+                    <Link to={ROUTES.SETTINGS} className="nav-link align-middle px-0 text-light">
                         <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Settings</span>
                     </Link>
-                    <Link to={ROUTES.ProductCategories} className="nav-link align-middle px-0">
+                    <Link to={ROUTES.ProductCategories} className="nav-link align-middle px-0 text-light">
                         <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Product Categories</span>
                     </Link>
-                    <Link to={ROUTES.BLOGS} className="nav-link align-middle px-0">
+                    <Link to={ROUTES.PRODUCT_REVIEWS} className="nav-link align-middle px-0 text-light">
+                        <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Product Reviews</span>
+                    </Link>
+                    <Link to={ROUTES.BLOGS} className="nav-link align-middle px-0 text-light">
                         <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Blogs</span>
                     </Link>
                 </li>

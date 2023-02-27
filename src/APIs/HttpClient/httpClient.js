@@ -14,7 +14,6 @@ export class HttpClient{
         return await axios.post(`${this.baseUrl}/${endpoint}`, body,config);
     }
     async put(endpoint, id, body, config){
-        console.log(body)
         return await axios.put(`${this.baseUrl}/${endpoint}/${id}`,body, config);
     }
     async delete(endpoint, id,config){

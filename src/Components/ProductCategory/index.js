@@ -212,7 +212,12 @@ let order = startIndex+1;
       nextClassName="page-item"
       previousLinkClassName="page-link"
       nextLinkClassName="page-link"
-      disabledClassName="disabled"
+      disabledClassName="disabled d-none"
+         breakLabel={'...'}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        breakClassName={'break-me'}
+        disableInitialCallback={true}
       previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
       nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
       />

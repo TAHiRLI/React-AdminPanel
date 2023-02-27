@@ -35,7 +35,7 @@
 }
 
 /*---------------------------------------------*/
-a {
+a.login {
 	font-family: Poppins-Regular;
 	font-size: 14px;
 	line-height: 1.7;
@@ -47,21 +47,21 @@ a {
   -moz-transition: all 0.4s;
 }
 
-a:focus {
+a.login:focus {
 	outline: none !important;
 }
 
-a:hover {
+a.login:hover {
 	text-decoration: none;
   color: #fff;
 }
 
 /*---------------------------------------------*/
-h1,h2,h3,h4,h5,h6 {
+h1.login,h2.login,h3.login,h4.login,h5.login,h6.login {
 	margin: 0px;
 }
 
-p {
+p.login {
 	font-family: Poppins-Regular;
 	font-size: 14px;
 	line-height: 1.7;
@@ -69,7 +69,7 @@ p {
 	margin: 0px;
 }
 
-ul, li {
+ul.login, li.login {
 	margin: 0px;
 	list-style-type: none;
 }

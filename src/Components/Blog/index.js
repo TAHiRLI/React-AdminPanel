@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import './blog.scss'
+import './blog.scss';
 import ReactPaginate from 'react-paginate';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,7 +26,7 @@ function BlogList() {
 
 
   //Delete
-  const deleteCategory = (id) => {
+  const deleteBlog = (id) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -37,8 +37,8 @@ function BlogList() {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        BlogService.deleteCategory(id).then(() => {
-          getAllCategories();
+        BlogService.delete(id).then(() => {
+          getAllBlogs();
         });
         Swal.fire(
           'Deleted!',
@@ -65,14 +65,14 @@ function BlogList() {
   // ==================
   // hooks 
   // ==================
-  const getAllCategories = React.useCallback(() => {
+  const getAllBlogs = React.useCallback(() => {
     BlogService.getAll().then(response => {
       setBlogs(response?.data);
     });
   }, []);
 
   React.useEffect(() => {
-    getAllCategories();
+    getAllBlogs();
   }, []);
 
 
@@ -98,25 +98,25 @@ function BlogList() {
           blogsToDisplay.map(blog => (
             <div className=" col-lg-3 p-3 " >
 
-            <div className='card h-100'>
-            <a href={blog.link}>   <img src={blog.imageUrl} className="card-img-top" alt="..." /></a>
-         
-            <div className="card-body d-flex flex-column justify-content-between">
-            <a href={blog.link} className="card-title text-decoration-none fw-semibold h5">{blog.title}</a>
-              <p className="card-text">
-              <p className="fw-semibold">{blog.doctor?.fullname}</p>
+              <div className='card h-100'>
+                <a href={blog.link}>   <img src={blog.imageUrl} className="card-img-top" alt="..." /></a>
 
-              {blog.prevText}
-              </p>
-              <button onClick={()=>deleteCategory(blog.id)} className="btn btn-danger d-block mt-4 fw-semibold">Remove this Blog</button>
+                <div className="card-body d-flex flex-column justify-content-between">
+                  <a href={blog.link} className="card-title text-decoration-none fw-semibold h5">{blog.title}</a>
+                  <p className="card-text">
+                    <p className="fw-semibold">{blog.doctor?.fullname}</p>
+
+                    {blog.prevText}
+                  </p>
+                  <button onClick={() => deleteBlog(blog.id)} className="btn btn-danger d-block mt-4 fw-semibold">Remove this Blog</button>
+                </div>
+              </div>
             </div>
-            </div>
-          </div>
-        ))
-        
+          ))
+
         }
 
-        
+
 
 
       </div>
@@ -124,7 +124,7 @@ function BlogList() {
       {/* Pagination */}
 
       <br></br>
-        {Math.ceil(blogs.length / itemsPerPage)!==1?(  <div>
+      {Math.ceil(blogs.length / itemsPerPage) !== 1 ? (<div>
         <ReactPaginate
           pageCount={Math.ceil(blogs.length / itemsPerPage)}
           onPageChange={handlePageChange}
@@ -136,12 +136,17 @@ function BlogList() {
           nextClassName="page-item"
           previousLinkClassName="page-link"
           nextLinkClassName="page-link"
-          disabledClassName="disabled"
+          disabledClassName="disabled d-none"
+          breakLabel={'...'}
+          marginPagesDisplayed={0}
+          pageRangeDisplayed={5}
+          breakClassName={'page-link'}
+          disableInitialCallback={true}
           previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
           nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
         />
-      </div>):(<></>)}
-    
+      </div>) : (<></>)}
+
 
 
 
