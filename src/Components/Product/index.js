@@ -42,29 +42,30 @@ function ProductList() {
   //Create
 
   const initCreateModal = () => {
-    setValue("Name", "");
-    setValue("CostPrice", "");
-    setValue("SalePrice", "");
-    setValue("DiscountPercent", "");
-    setValue("ProductCateogryId", "");
-    setValue("Id", "");
-    setValue("StockStatus", "");
+    // setValue("Name", "");
+    // setValue("CostPrice", "");
+    // setValue("SalePrice", "");
+    // setValue("DiscountPercent", "");
+    // setValue("ProductCateogryId", "");
+    // setValue("Id", "");
+    // setValue("StockStatus", "");
 
     return invokeCreateModal(!isCreateShow);
   };
 
   const create_OnSubmit = (data) => {
-    console.log("button clicked")
-    let closeModal = false;
+    let openModal = false;
+    clearErrors();
+    console.log(data)
     const formData = new FormData();
     formData.append("name", data.Name);
     formData.append("desc", data.Desc)
-    formData.append("categoryId", data.ProductCategoryId);
+    formData.append("productCategoryId", data.productCategoryId);
     formData.append("costPrice", data.CostPrice);
     formData.append("salePrice", data.SalePrice);
     formData.append("discountPercent", data.DiscountPercent);
     formData.append("PosterImage", data.PosterImage[0]);
-    formData.append("stockStatus", data.StockStatus);
+    formData.append("stockStatus", data.IsStocked);
     formData.append("isFeatured", data.IsFeatured);
     formData.append("isSoldIndividual", data.IsSoldIndividual);
 
@@ -77,20 +78,25 @@ function ProductList() {
 
 
     ProductService.create(formData).then(response => {
+      console.log("my response",response)
     })
       .catch(err => {
-        // clearErrors() need to invoked manually to remove that custom error 
+        openModal = true;
+        console.log("catch error", err)
+        let{errors} = err.response.data
 
-        closeModal = true;
-        let errors = err?.response?.data?.errors?.Name;
-        errors?.forEach(element => {
-          console.log(element);
-        });
-        alert(errors[0]);
+        console.log(errors)
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            const element = errors[key];
+            setError(key, { type: 'custom', message: element.join(", ") });
+            console.log(key, element.join(", "))
+          }
+        }
       })
       .finally(() => {
+        invokeCreateModal(openModal);
         getAllProducts();
-        invokeCreateModal(closeModal);
       });
   };
 
@@ -214,13 +220,13 @@ function ProductList() {
 
   React.useEffect(() => {
     if (editModel) {
-      setValue("Id", editModel.id);
-      setValue("Name", editModel.name);
-      setValue("CostPrice", editModel.costPrice);
-      setValue("SalePrice", editModel.salePrice);
-      setValue("DiscountPercent", editModel.discountPercent);
-      setValue("StockStatus", editModel.stockStatus);
-      setValue("ProductCategoryId", editModel.categoryId);
+      // setValue("Id", editModel.id);
+      // setValue("Name", editModel.name);
+      // setValue("CostPrice", editModel.costPrice);
+      // setValue("SalePrice", editModel.salePrice);
+      // setValue("DiscountPercent", editModel.discountPercent);
+      // setValue("StockStatus", editModel.stockStatus);
+      // setValue("productCategoryId", editModel.categoryId);
 
     }
   }, [editModel, isEditShow]);
@@ -415,10 +421,10 @@ function ProductList() {
               <label htmlFor="" className='form-label'>Category</label>
               <input
                 type="number"
-                placeholder="ProductCategoryId"
+                placeholder="productCategoryId"
                 className='form-control mt-2'
-                aria-invalid={errors.ProductCategoryId ? "true" : "false"}
-                {...register("ProductCategoryId", { required: "this field is required", })}
+                aria-invalid={errors.productCategoryId ? "true" : "false"}
+                {...register("productCategoryId", { required: "this field is required", })}
               />
             </div>
 
@@ -552,7 +558,7 @@ function ProductList() {
             {/* Description */}
             <div className="my-2">
               <input type="hidden"
-                {...register("Desc", { required: "this field is required", maxLength: 100 })}
+                {...register("Desc", { required: "this field is required", maxLength: 300 })}
               />
               <label className='form-label'>Description</label>
               <CKEditor
@@ -564,7 +570,7 @@ function ProductList() {
                 }}
 
               />
-              {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be 100 characters</small>}
+              {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be 300 characters</small>}
 
             </div>
 
@@ -615,23 +621,25 @@ function ProductList() {
               <label htmlFor="" className='form-label'>Category</label>
               <input
                 type="number"
-                placeholder="ProductCategoryId"
+                placeholder="productCategoryId"
                 className='form-control mt-2'
-                aria-invalid={errors.ProductCategoryId ? "true" : "false"}
-                {...register("ProductCategoryId", { required: "this field is required", })}
+                aria-invalid={errors.productCategoryId ? "true" : "false"}
+                {...register("productCategoryId", { required: "this field is required", })}
               />
+              {errors.productCategoryId && errors.productCategoryId.type === "custom" && <small className='text-danger' role="alert">{errors.productCategoryId.message}</small>}
+
             </div>
 
             {/* Stock status */}
             <div className="my-2">
-              <label htmlFor="" className='form-check-label'>Stock Status</label>
+              <label htmlFor="" className='form-check-label'>Stock Status12</label>
 
               <input
                 type="checkbox"
-                placeholder="StockStatus"
+                placeholder="IsStocked"
                 className='d-block'
-                aria-invalid={errors.StockStatus ? "true" : "false"}
-                {...register("StockStatus", { required: false, })}
+                aria-invalid={errors.IsStocked ? "true" : "false"}
+                {...register("IsStocked", { required: false, })}
               />
 
             </div>
@@ -684,6 +692,7 @@ function ProductList() {
               <div className="col">
                 <img src='https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product.png' width="100" height="100" className='object-fit-cover' />
               </div>
+            {errors.PosterImage && errors.PosterImage.type === "custom" && <small className='text-danger' role="alert">{errors.PosterImage.message}</small>}
             </div>
 
             {/* Other Images */}
@@ -699,6 +708,8 @@ function ProductList() {
                   aria-invalid={errors.OtherImages ? "true" : "false"}
                   {...register("OtherImages", { required: false })}
                 />
+              {errors.OtherImages && errors.OtherImages.type === "custom" && <small className='text-danger' role="alert">{errors.OtherImages.message}</small>}
+
               </div>
               <div className="col d-flex ">
                 <div className='mx-2'>
@@ -741,7 +752,7 @@ function ProductList() {
         }}
       </ErrorMessage>
 
-      <ErrorMessage errors={errors} name="ProductCategoryId">
+      <ErrorMessage errors={errors} name="productCategoryId">
         {({ messages }) => {
           console.log(messages);
           return (
@@ -793,7 +804,7 @@ function ProductList() {
       </ErrorMessage>
 
 
-      <ErrorMessage errors={errors} name="Name">
+      <ErrorMessage errors={errors} name="PosterImage">
         {({ messages }) => {
           console.log(messages);
           return (
