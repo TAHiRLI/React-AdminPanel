@@ -17,11 +17,7 @@ import { faChevronLeft, faChevronRight, faSquarePlus, faTrashCan, faPencil, faXm
 
 
 function ProductList() {
-  const { register, handleSubmit, formState: { errors }, setValue, control, setError, clearErrors } = useForm({
-    defaultValues: {
-      StockStatus: false
-    }
-  });
+  const { register, handleSubmit, formState: { errors }, setValue, control, setError, clearErrors } = useForm();
 
   // ==================
   // States 
@@ -42,13 +38,15 @@ function ProductList() {
   //Create
 
   const initCreateModal = () => {
-    // setValue("Name", "");
-    // setValue("CostPrice", "");
-    // setValue("SalePrice", "");
-    // setValue("DiscountPercent", "");
-    // setValue("ProductCateogryId", "");
-    // setValue("Id", "");
-    // setValue("StockStatus", "");
+    setValue("Id", "");
+    setValue("Name", "");
+    setValue("Desc", "");
+    setValue("DiscountPercent", "");
+    setValue("CostPrice", "");
+    setValue("SalePrice", "");
+    setValue("StockStatus", "");
+    setValue("productCategoryId", "");
+    setValue("IsSoldIndividual", "");
 
     return invokeCreateModal(!isCreateShow);
   };
@@ -56,10 +54,9 @@ function ProductList() {
   const create_OnSubmit = (data) => {
     let openModal = false;
     clearErrors();
-    console.log(data)
     const formData = new FormData();
     formData.append("name", data.Name);
-    formData.append("desc", data.Desc)
+    formData.append("desc", data.Desc);
     formData.append("productCategoryId", data.productCategoryId);
     formData.append("costPrice", data.CostPrice);
     formData.append("salePrice", data.SalePrice);
@@ -69,28 +66,24 @@ function ProductList() {
     formData.append("isFeatured", data.IsFeatured);
     formData.append("isSoldIndividual", data.IsSoldIndividual);
 
-    let imageCount = data.OtherImages?.length ??0 ; 
-    console.log(imageCount)
+    let imageCount = data.OtherImages?.length ?? 0;
     for (let i = 0; i < imageCount; i++) {
-     formData.append("OtherImages", data.OtherImages[i])
+      formData.append("OtherImages", data.OtherImages[i]);
     }
-   
+
 
 
     ProductService.create(formData).then(response => {
-      console.log("my response",response)
     })
       .catch(err => {
         openModal = true;
-        console.log("catch error", err)
-        let{errors} = err.response.data
+        let { errors } = err.response.data;
 
-        console.log(errors)
+        console.log(errors);
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const element = errors[key];
             setError(key, { type: 'custom', message: element.join(", ") });
-            console.log(key, element.join(", "))
           }
         }
       })
@@ -111,29 +104,40 @@ function ProductList() {
 
     invokeEditModal(true);
     let product = await ProductService.getById(id);
-
-    setEditModel(product.data[0]);
+    setEditModel(product.data);
 
   };
   const edit_OnSubmit = (data) => {
-    let stayOpened = false;
+    console.log(data)
 
+    let stayOpened = false;
     let formData = new FormData();
+  
+    formData.append("id", data.Id);
+    formData.append("name", data.Name);
+    formData.append("desc", data.Desc);
+    formData.append("productCategoryId", data.productCategoryId);
+    formData.append("costPrice", data.CostPrice);
+    formData.append("salePrice", data.SalePrice);
+    formData.append("discountPercent", data.DiscountPercent);
+    formData.append("PosterImage", data.PosterImage[0]);
+    formData.append("stockStatus", data.IsStocked);
+    formData.append("isFeatured", data.IsFeatured);
+    formData.append("isSoldIndividual", data.IsSoldIndividual);
+
     if (data.PosterImage[0] !== undefined) {
       formData.append("PosterImage", data.PosterImage[0]);
     }
     else {
       formData.append("PosterImage", null);
     }
-    formData.append("id", data.name);
-    formData.append("name", data.name);
-    formData.append("costPrice", data.CostPrice);
-    formData.append("salePrice", data.SalePrice);
-    formData.append("discountPercent", data.DiscountPercent);
-    formData.append("categoryId", data.CategoryId);
-    formData.append("stockStatus", data.StockStatus);
 
-    ProductService.edit(data.id, formData).then(response => {
+    let imageCount = data.OtherImages?.length ?? 0;
+    for (let i = 0; i < imageCount; i++) {
+      formData.append("OtherImages", data.OtherImages[i]);
+    }
+
+    ProductService.edit(data.Id, formData).then(response => {
     })
       .catch(err => {
         setError("Name", { type: "custom" }, { shouldFocus: true });
@@ -184,7 +188,6 @@ function ProductList() {
         content.push(<i key={i} className="zmdi zmdi-star-outline text-primary "></i>);
       else
         content.push(<i key={i} className="zmdi zmdi-star text-primary "></i>);
-
     }
     return content;
   };
@@ -209,7 +212,6 @@ function ProductList() {
   // ==================
   const getAllProducts = React.useCallback(() => {
     ProductService.getAll().then(response => {
-      console.log(response);
       setProducts(response?.data);
     });
   }, []);
@@ -220,13 +222,17 @@ function ProductList() {
 
   React.useEffect(() => {
     if (editModel) {
-      // setValue("Id", editModel.id);
-      // setValue("Name", editModel.name);
-      // setValue("CostPrice", editModel.costPrice);
-      // setValue("SalePrice", editModel.salePrice);
-      // setValue("DiscountPercent", editModel.discountPercent);
-      // setValue("StockStatus", editModel.stockStatus);
-      // setValue("productCategoryId", editModel.categoryId);
+      setValue("Id", editModel.id);
+      setValue("Name", editModel.name);
+      setValue("Desc", editModel.desc);
+      setValue("DiscountPercent", editModel.discoutPercent);
+      setValue("CostPrice", editModel.costPrice);
+      setValue("SalePrice", editModel.salePrice);
+      setValue("StockStatus", editModel.stockStatus);
+      setValue("productCategoryId", editModel.productCategoryId);
+      setValue("IsSoldIndividual", editModel.isSoldIndividual);
+
+
 
     }
   }, [editModel, isEditShow]);
@@ -238,7 +244,9 @@ function ProductList() {
 
 
   // Data validation rules
-  let Name_maxlength = 20;
+  let Name_maxlength = 30;
+  let Desc_maxLength = 300;
+
 
   return (
     <div className='d-flex justify-content-center flex-column container'>
@@ -333,13 +341,15 @@ function ProductList() {
 
       {/* edit */}
 
-      <Modal show={isEditShow}>
+      <Modal dialogClassName="modal-width modal-xl" show={isEditShow}>
         <Modal.Header closeButton onClick={initEditModal}>
           <Modal.Title>Edit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form id='editCategory' onSubmit={handleSubmit(edit_OnSubmit)} >
-           
+
+            <input type="hidden" {...register("Id", { required: true })} />
+
             {/* Name Input */}
             <div className="my-2">
               <label htmlFor="" className='form-label'>Name</label>
@@ -358,19 +368,19 @@ function ProductList() {
             {/* Description */}
             <div className="my-2">
               <input type="hidden"
-                {...register("Desc", { required: "this field is required", maxLength: 100 })}
+                {...register("Desc", { required: "this field is required", maxLength: {Desc_maxLength} })}
               />
               <label className='form-label'>Description</label>
               <CKEditor
                 editor={ClassicEditor}
-                data={products[0]?.name}
+                data={editModel?.desc?.trim()}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setValue("Desc", data);
                 }}
 
               />
-              {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be 100 characters</small>}
+              {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Desc_maxLength} characters</small>}
 
             </div>
 
@@ -478,17 +488,17 @@ function ProductList() {
             <div className="my-2 row align-items-center ">
               <div className="col-3 mx-2">
 
-                <label htmlFor="" className='form-check-label'>Stock Status</label>
+                <label htmlFor="" className='form-check-label'>Main Image</label>
                 <input
                   type="file"
                   accept="image/png, image/jpeg"
                   className='form-control mt-2'
                   aria-invalid={errors.PosterImage ? "true" : "false"}
-                  {...register("PosterImage", { required: true })}
+                  {...register("PosterImage", { required: false })}
                 />
               </div>
               <div className="col">
-                <img src='https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product.png' width="100" height="100" className='object-fit-cover' />
+                <img src={editModel?.productImages?.find(x=> x?.isMain == true)?.imageUrl} width="100" height="100" className='object-fit-cover' />
               </div>
             </div>
 
@@ -496,7 +506,7 @@ function ProductList() {
             <div className="my-4 row align-items-center ">
               <div className="col-3">
 
-                <label htmlFor="" className='form-check-label'>Stock Status</label>
+                <label htmlFor="" className='form-check-label'>Images</label>
                 <input
                   type="file"
                   multiple
@@ -506,20 +516,22 @@ function ProductList() {
                   {...register("OtherImages", { required: false })}
                 />
               </div>
-              <div className="col d-flex ">
-                <div className='mx-2'>
-                  <FontAwesomeIcon icon={faXmarkCircle} className='text-danger pointer' />
-                  <img src='https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product.png' width="100" height="100" className='object-fit-cover' />
+              <div className="col d-flex  overflow-auto flex-wrap">
+                {editModel?.productImages?.map(item=>{
+                  if(item?.isMain == false){
+                    return (
+                        <div key={item.id} className='mx-2 pos-relative p-3'>
+                  <FontAwesomeIcon icon={faXmarkCircle} className='text-danger pointer pos-absolute top-0 right-0' />
+                  <img src={item?.imageUrl} width="100" height="100" className='object-fit-cover' />
+                  {setValue("RemainingImageIds", item.id)}
+                  <input type="hidden" {...register("RemainingImageIds", { required: false })} />
                 </div>
-                <div className='mx-2'>
-                  <FontAwesomeIcon icon={faXmarkCircle} className='text-danger pointer' />
-                  <img src='https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product.png' width="100" height="100" className='object-fit-cover' />
-                </div>
-                <div className='mx-2'>
-                  <FontAwesomeIcon icon={faXmarkCircle} className='text-danger pointer' />
-                  <img src='https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product.png' width="100" height="100" className='object-fit-cover' />
-                </div>
+                )
+                  }
+                })}
               </div>
+
+
             </div>
           </form>
         </Modal.Body>
@@ -551,6 +563,8 @@ function ProductList() {
               />
               {errors.Name && errors.Name.type === "required" && <small className='text-danger' role="alert">{errors?.Name?.message}</small>}
               {errors.Name && errors.Name.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Name_maxlength} characters</small>}
+              {errors.Name && errors.Name.type === "custom" && <small className='text-danger' role="alert">{errors.Name.message}</small>}
+
             </div>
 
 
@@ -558,7 +572,7 @@ function ProductList() {
             {/* Description */}
             <div className="my-2">
               <input type="hidden"
-                {...register("Desc", { required: "this field is required", maxLength: 300 })}
+                {...register("Desc", { required: "this field is required", maxLength: { Desc_maxLengts: Desc_maxLength } })}
               />
               <label className='form-label'>Description</label>
               <CKEditor
@@ -570,7 +584,8 @@ function ProductList() {
                 }}
 
               />
-              {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be 300 characters</small>}
+              {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Desc_maxLength} characters</small>}
+              {errors.Desc && errors.Desc.type === "custom" && <small className='text-danger' role="alert">{errors.Desc.message}</small>}
 
             </div>
 
@@ -586,6 +601,8 @@ function ProductList() {
                   aria-invalid={errors.CostPrice ? "true" : "false"}
                   {...register("CostPrice", { required: "this field is required", min: 0 })}
                 />
+                {errors.CostPrice && errors.CostPrice.type === "custom" && <small className='text-danger' role="alert">{errors.CostPrice.message}</small>}
+
               </div>
 
               {/* Sale Price Input */}
@@ -599,6 +616,8 @@ function ProductList() {
                   aria-invalid={errors.SalePrice ? "true" : "false"}
                   {...register("SalePrice", { required: "this field is required", min: 0 })}
                 />
+                {errors.SalePrice && errors.SalePrice.type === "custom" && <small className='text-danger' role="alert">{errors.SalePrice.message}</small>}
+
               </div>
 
               {/* discount Percent Input */}
@@ -612,6 +631,8 @@ function ProductList() {
                   aria-invalid={errors.DiscountPercent ? "true" : "false"}
                   {...register("DiscountPercent", { required: "this field is required", min: 0, max: 100 })}
                 />
+                {errors.DiscountPercent && errors.DiscountPercent.type === "custom" && <small className='text-danger' role="alert">{errors.DiscountPercent.message}</small>}
+
               </div>
 
             </div>
@@ -641,6 +662,7 @@ function ProductList() {
                 aria-invalid={errors.IsStocked ? "true" : "false"}
                 {...register("IsStocked", { required: false, })}
               />
+              {errors.IsStocked && errors.IsStocked.type === "custom" && <small className='text-danger' role="alert">{errors.IsStocked.message}</small>}
 
             </div>
 
@@ -655,6 +677,7 @@ function ProductList() {
                 aria-invalid={errors.IsFeatured ? "true" : "false"}
                 {...register("IsFeatured", { required: false, })}
               />
+              {errors.IsFeatured && errors.IsFeatured.type === "custom" && <small className='text-danger' role="alert">{errors.IsFeatured.message}</small>}
 
             </div>
 
@@ -670,6 +693,7 @@ function ProductList() {
                 aria-invalid={errors.IsSoldIndividual ? "true" : "false"}
                 {...register("IsSoldIndividual", { required: false, })}
               />
+              {errors.IsSoldIndividual && errors.IsSoldIndividual.type === "custom" && <small className='text-danger' role="alert">{errors.IsSoldIndividual.message}</small>}
 
             </div>
 
@@ -692,7 +716,7 @@ function ProductList() {
               <div className="col">
                 <img src='https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product.png' width="100" height="100" className='object-fit-cover' />
               </div>
-            {errors.PosterImage && errors.PosterImage.type === "custom" && <small className='text-danger' role="alert">{errors.PosterImage.message}</small>}
+              {errors.PosterImage && errors.PosterImage.type === "custom" && <small className='text-danger' role="alert">{errors.PosterImage.message}</small>}
             </div>
 
             {/* Other Images */}
@@ -708,7 +732,7 @@ function ProductList() {
                   aria-invalid={errors.OtherImages ? "true" : "false"}
                   {...register("OtherImages", { required: false })}
                 />
-              {errors.OtherImages && errors.OtherImages.type === "custom" && <small className='text-danger' role="alert">{errors.OtherImages.message}</small>}
+                {errors.OtherImages && errors.OtherImages.type === "custom" && <small className='text-danger' role="alert">{errors.OtherImages.message}</small>}
 
               </div>
               <div className="col d-flex ">
@@ -727,94 +751,94 @@ function ProductList() {
               </div>
             </div>
 
-                {/* Errors */}
+            {/* Errors */}
             <ErrorMessage errors={errors} name="Name">
-        {({ messages }) => {
-          console.log(messages);
-          return (
-            messages &&
-            Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
-            ))
-          );
-        }}
-      </ErrorMessage>
+              {({ messages }) => {
+                console.log(messages);
+                return (
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type}>{message}</p>
+                  ))
+                );
+              }}
+            </ErrorMessage>
 
-      <ErrorMessage errors={errors} name="Desc">
-        {({ messages }) => {
-          console.log(messages);
-          return (
-            messages &&
-            Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
-            ))
-          );
-        }}
-      </ErrorMessage>
+            <ErrorMessage errors={errors} name="Desc">
+              {({ messages }) => {
+                console.log(messages);
+                return (
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type}>{message}</p>
+                  ))
+                );
+              }}
+            </ErrorMessage>
 
-      <ErrorMessage errors={errors} name="productCategoryId">
-        {({ messages }) => {
-          console.log(messages);
-          return (
-            messages &&
-            Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
-            ))
-          );
-        }}
-      </ErrorMessage>
-
-
-      <ErrorMessage errors={errors} name="CostPrice">
-        {({ messages }) => {
-          console.log(messages);
-          return (
-            messages &&
-            Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
-            ))
-          );
-        }}
-      </ErrorMessage>
+            <ErrorMessage errors={errors} name="productCategoryId">
+              {({ messages }) => {
+                console.log(messages);
+                return (
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type}>{message}</p>
+                  ))
+                );
+              }}
+            </ErrorMessage>
 
 
-      <ErrorMessage errors={errors} name="SalePrice">
-        {({ messages }) => {
-          console.log(messages);
-          return (
-            messages &&
-            Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
-            ))
-          );
-        }}
-      </ErrorMessage>
+            <ErrorMessage errors={errors} name="CostPrice">
+              {({ messages }) => {
+                console.log(messages);
+                return (
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type}>{message}</p>
+                  ))
+                );
+              }}
+            </ErrorMessage>
 
 
-      <ErrorMessage errors={errors} name="DiscountPercent">
-        {({ messages }) => {
-          console.log(messages);
-          return (
-            messages &&
-            Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
-            ))
-          );
-        }}
-      </ErrorMessage>
+            <ErrorMessage errors={errors} name="SalePrice">
+              {({ messages }) => {
+                console.log(messages);
+                return (
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type}>{message}</p>
+                  ))
+                );
+              }}
+            </ErrorMessage>
 
 
-      <ErrorMessage errors={errors} name="PosterImage">
-        {({ messages }) => {
-          console.log(messages);
-          return (
-            messages &&
-            Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
-            ))
-          );
-        }}
-      </ErrorMessage>
+            <ErrorMessage errors={errors} name="DiscountPercent">
+              {({ messages }) => {
+                console.log(messages);
+                return (
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type}>{message}</p>
+                  ))
+                );
+              }}
+            </ErrorMessage>
+
+
+            <ErrorMessage errors={errors} name="PosterImage">
+              {({ messages }) => {
+                console.log(messages);
+                return (
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type}>{message}</p>
+                  ))
+                );
+              }}
+            </ErrorMessage>
 
           </form>
         </Modal.Body>
