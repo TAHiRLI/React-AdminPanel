@@ -99,15 +99,15 @@ function BlogList() {
             <div className=" col-lg-3 p-3 " >
 
               <div className='card h-100'>
-                <a href={blog.link}>   <img src={blog.imageUrl} className="card-img-top" alt="..." /></a>
+                <a href={blog.link}>   <img src={blog.imageUrl} className="blog card-img-top" alt="..." /></a>
 
                 <div className="card-body d-flex flex-column justify-content-between">
-                  <a href={blog.link} className="card-title text-decoration-none fw-semibold h5">{blog.title}</a>
-                  <p className="card-text">
+                  <a href={blog.link} className="blog card-title text-dark text-decoration-none fw-semibold h5">{blog.title}</a>
+                  <div className="card-text">
                     <p className="fw-semibold">{blog.doctor?.fullname}</p>
 
                     {blog.prevText}
-                  </p>
+                  </div>
                   <button onClick={() => deleteBlog(blog.id)} className="btn btn-danger d-block mt-4 fw-semibold">Remove this Blog</button>
                 </div>
               </div>

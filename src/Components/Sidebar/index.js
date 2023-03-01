@@ -30,7 +30,10 @@ function Sidebar() {
                     <Link to={ROUTES.SETTINGS} className="nav-link align-middle px-0 text-light">
                         <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Settings</span>
                     </Link>
-                    <Link to={ROUTES.ProductCategories} className="nav-link align-middle px-0 text-light">
+                    <Link to={ROUTES.PRODUCTS} className="nav-link align-middle px-0 text-light">
+                        <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Products</span>
+                    </Link>
+                    <Link to={ROUTES.PRODUCT_CATEGORIES} className="nav-link align-middle px-0 text-light">
                         <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Product Categories</span>
                     </Link>
                     <Link to={ROUTES.PRODUCT_REVIEWS} className="nav-link align-middle px-0 text-light">

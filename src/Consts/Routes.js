@@ -7,7 +7,7 @@ export const ROUTES ={
     LOGIN:"/login",
     PRODUCTS:"/Products",
     SETTINGS:"/Settings",
-    ProductCategories:"/ProductCategories",
+    PRODUCT_CATEGORIES:"/ProductCategories",
     BLOGS:"/Blogs",
     PRODUCT_REVIEWS:"/ProductReviews"
 }

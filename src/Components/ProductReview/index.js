@@ -59,7 +59,7 @@ function ProductReviewList() {
     //Approve
     const ApproveReview = (id) => {
         ProductReviewService.approve(id).then((res) => {
-            console.log(res)
+            console.log(res);
             if (res.status == 200) {
                 Swal.fire(
                     'Approved!',
@@ -88,8 +88,10 @@ function ProductReviewList() {
         setCurrentPage(selectedPage);
     };
     const itemsPerPage = 4;
-    const startIndex = (currentPage - 1) * itemsPerPage; 
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
 
+    const reviewsToDisplay = reviews.slice(startIndex, endIndex);
     let order = startIndex + 1;
 
 
@@ -142,7 +144,7 @@ function ProductReviewList() {
                     {
                         reviewsToDisplay.map(review => (
 
-                            <tr  key={review.id}>
+                            <tr key={review.id}>
                                 <td>{order++}</td>
                                 <td> <a href={review.link} className="fw-bold text-decoration-none fs-6 text-dark ">{review.product?.name}</a> </td>
                                 <td>{review.appUser?.userName}</td>
@@ -156,7 +158,7 @@ function ProductReviewList() {
                                 </td>
                                 <td className='d-flex justify-content-end float-none'>
                                     {review.isApproved == false ? (
-                                        <button  onClick={() => ApproveReview(review.id)} className='btn btn-info mx-2 ' ><i className='zmdi zmdi-edit'></i></button>
+                                        <button onClick={() => ApproveReview(review.id)} className='btn btn-info mx-2 ' ><i className='zmdi zmdi-edit'></i></button>
                                     ) : (<></>)}
                                     <button onClick={() => RejectReview(review.id)} className='btn btn-danger ' ><i className='zmdi zmdi-delete'></i></button>
                                 </td>

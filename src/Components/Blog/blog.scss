@@ -1,9 +1,10 @@
-.card-img-top {
+.blog.card-img-top {
     width: 100%;
     height: 15vw;
     object-fit: cover;
+    object-position: center center;
 }
-.card-title{
+.blog.card-title{
     min-height: 3vw;
     &:hover{
         color:black !important;
