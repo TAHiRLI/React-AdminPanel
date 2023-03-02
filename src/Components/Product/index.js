@@ -44,9 +44,7 @@ function ProductList() {
     setValue("DiscountPercent", "");
     setValue("CostPrice", "");
     setValue("SalePrice", "");
-    setValue("StockStatus", "");
     setValue("productCategoryId", "");
-    setValue("IsSoldIndividual", "");
 
     return invokeCreateModal(!isCreateShow);
   };
@@ -108,11 +106,11 @@ function ProductList() {
 
   };
   const edit_OnSubmit = (data) => {
-    console.log(data)
+    console.log(data);
 
     let stayOpened = false;
     let formData = new FormData();
-  
+
     formData.append("id", data.Id);
     formData.append("name", data.Name);
     formData.append("desc", data.Desc);
@@ -228,10 +226,10 @@ function ProductList() {
       setValue("DiscountPercent", editModel.discoutPercent);
       setValue("CostPrice", editModel.costPrice);
       setValue("SalePrice", editModel.salePrice);
-      setValue("StockStatus", editModel.stockStatus);
+      setValue("StockStatus", editModel.stockStatus ?? false);
       setValue("productCategoryId", editModel.productCategoryId);
-      setValue("IsSoldIndividual", editModel.isSoldIndividual);
-
+      setValue("IsSoldIndividual", editModel.isSoldIndividual ?? false);
+      setValue("IsFeatured", editModel.isFetaured ?? false);
 
 
     }
@@ -338,7 +336,6 @@ function ProductList() {
           nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
         />
       </div>) : (<></>)}
-
       {/* edit */}
 
       <Modal dialogClassName="modal-width modal-xl" show={isEditShow}>
@@ -348,7 +345,7 @@ function ProductList() {
         <Modal.Body>
           <form id='editCategory' onSubmit={handleSubmit(edit_OnSubmit)} >
 
-            <input type="hidden" {...register("Id", { required: true })} />
+            <input type="hidden" {...register("Id", { required: false })} />
 
             {/* Name Input */}
             <div className="my-2">
@@ -357,7 +354,7 @@ function ProductList() {
                 placeholder="Name"
                 className='form-control '
                 aria-invalid={errors.Name ? "true" : "false"}
-                {...register("Name", { required: "this field is required", maxLength: Name_maxlength })}
+                {...register("Name", { required: "Name field is required", maxLength: Name_maxlength })}
               />
               {errors.Name && errors.Name.type === "required" && <small className='text-danger' role="alert">{errors?.Name?.message}</small>}
               {errors.Name && errors.Name.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Name_maxlength} characters</small>}
@@ -368,7 +365,7 @@ function ProductList() {
             {/* Description */}
             <div className="my-2">
               <input type="hidden"
-                {...register("Desc", { required: "this field is required", maxLength: {Desc_maxLength} })}
+                {...register("Desc", { required: "Desc field is required", maxLength: { Desc_maxLength } })}
               />
               <label className='form-label'>Description</label>
               <CKEditor
@@ -394,7 +391,7 @@ function ProductList() {
                   placeholder="Cost Price"
                   className='form-control mt-2'
                   aria-invalid={errors.CostPrice ? "true" : "false"}
-                  {...register("CostPrice", { required: "this field is required", min: 0 })}
+                  {...register("CostPrice", { required: "CostPrice field is required", min: 0 })}
                 />
               </div>
 
@@ -407,7 +404,7 @@ function ProductList() {
                   placeholder="Sale Price"
                   className='form-control mt-2'
                   aria-invalid={errors.SalePrice ? "true" : "false"}
-                  {...register("SalePrice", { required: "this field is required", min: 0 })}
+                  {...register("SalePrice", { required: "SalePrice field is required", min: 0 })}
                 />
               </div>
 
@@ -420,7 +417,7 @@ function ProductList() {
                   placeholder="Discount Percent"
                   className='form-control mt-2'
                   aria-invalid={errors.DiscountPercent ? "true" : "false"}
-                  {...register("DiscountPercent", { required: "this field is required", min: 0, max: 100 })}
+                  {...register("DiscountPercent", { required: "DiscountPercent field is required", min: 0, max: 100 })}
                 />
               </div>
 
@@ -434,7 +431,7 @@ function ProductList() {
                 placeholder="productCategoryId"
                 className='form-control mt-2'
                 aria-invalid={errors.productCategoryId ? "true" : "false"}
-                {...register("productCategoryId", { required: "this field is required", })}
+                {...register("productCategoryId", { required: "productCategoryId field is required", })}
               />
             </div>
 
@@ -498,7 +495,7 @@ function ProductList() {
                 />
               </div>
               <div className="col">
-                <img src={editModel?.productImages?.find(x=> x?.isMain == true)?.imageUrl} width="100" height="100" className='object-fit-cover' />
+                <img src={editModel?.productImages?.find(x => x?.isMain == true)?.imageUrl} width="100" height="100" className='object-fit-cover' />
               </div>
             </div>
 
@@ -517,16 +514,16 @@ function ProductList() {
                 />
               </div>
               <div className="col d-flex  overflow-auto flex-wrap">
-                {editModel?.productImages?.map(item=>{
-                  if(item?.isMain == false){
+                {editModel?.productImages?.map(item => {
+                  if (item?.isMain == false) {
                     return (
-                        <div key={item.id} className='mx-2 pos-relative p-3'>
-                  <FontAwesomeIcon icon={faXmarkCircle} className='text-danger pointer pos-absolute top-0 right-0' />
-                  <img src={item?.imageUrl} width="100" height="100" className='object-fit-cover' />
-                  {setValue("RemainingImageIds", item.id)}
-                  <input type="hidden" {...register("RemainingImageIds", { required: false })} />
-                </div>
-                )
+                      <div key={item.id} className='mx-2 pos-relative p-3'>
+                        <FontAwesomeIcon icon={faXmarkCircle} className='text-danger pointer pos-absolute top-0 right-0' />
+                        <img src={item?.imageUrl} width="100" height="100" className='object-fit-cover' />
+                        {setValue("RemainingImageIds", item.id)}
+                        <input type="hidden" {...register("RemainingImageIds", { required: false })} />
+                      </div>
+                    );
                   }
                 })}
               </div>
@@ -544,6 +541,7 @@ function ProductList() {
           </Button>
         </Modal.Footer>
       </Modal>
+
       {/* create  modal  */}
       <Modal dialogClassName="modal-width modal-xl" show={isCreateShow}>
         <Modal.Header closeButton onClick={initCreateModal}>
@@ -559,7 +557,7 @@ function ProductList() {
                 placeholder="Name"
                 className='form-control '
                 aria-invalid={errors.Name ? "true" : "false"}
-                {...register("Name", { required: "this field is required", maxLength: Name_maxlength })}
+                {...register("Name", { required: "Name field is required", maxLength: Name_maxlength })}
               />
               {errors.Name && errors.Name.type === "required" && <small className='text-danger' role="alert">{errors?.Name?.message}</small>}
               {errors.Name && errors.Name.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Name_maxlength} characters</small>}
@@ -572,12 +570,12 @@ function ProductList() {
             {/* Description */}
             <div className="my-2">
               <input type="hidden"
-                {...register("Desc", { required: "this field is required", maxLength: { Desc_maxLengts: Desc_maxLength } })}
+                {...register("Desc", { required: "Desc field is required", maxLength: { Desc_maxLengts: Desc_maxLength } })}
               />
               <label className='form-label'>Description</label>
               <CKEditor
                 editor={ClassicEditor}
-                data={products[0]?.name}
+                // data={products[0]?.name}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setValue("Desc", data);
@@ -586,6 +584,7 @@ function ProductList() {
               />
               {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Desc_maxLength} characters</small>}
               {errors.Desc && errors.Desc.type === "custom" && <small className='text-danger' role="alert">{errors.Desc.message}</small>}
+              {errors.Desc  && <small className='text-danger' role="alert">{errors.Desc.message}</small>}
 
             </div>
 
@@ -599,7 +598,7 @@ function ProductList() {
                   placeholder="Cost Price"
                   className='form-control mt-2'
                   aria-invalid={errors.CostPrice ? "true" : "false"}
-                  {...register("CostPrice", { required: "this field is required", min: 0 })}
+                  {...register("CostPrice", { required: "CostPrice field is required", min: 0 })}
                 />
                 {errors.CostPrice && errors.CostPrice.type === "custom" && <small className='text-danger' role="alert">{errors.CostPrice.message}</small>}
 
@@ -614,7 +613,7 @@ function ProductList() {
                   placeholder="Sale Price"
                   className='form-control mt-2'
                   aria-invalid={errors.SalePrice ? "true" : "false"}
-                  {...register("SalePrice", { required: "this field is required", min: 0 })}
+                  {...register("SalePrice", { required: "SalePrice field is required", min: 0 })}
                 />
                 {errors.SalePrice && errors.SalePrice.type === "custom" && <small className='text-danger' role="alert">{errors.SalePrice.message}</small>}
 
@@ -629,7 +628,7 @@ function ProductList() {
                   placeholder="Discount Percent"
                   className='form-control mt-2'
                   aria-invalid={errors.DiscountPercent ? "true" : "false"}
-                  {...register("DiscountPercent", { required: "this field is required", min: 0, max: 100 })}
+                  {...register("DiscountPercent", { required: "DiscountPercent field is required", min: 0, max: 100 })}
                 />
                 {errors.DiscountPercent && errors.DiscountPercent.type === "custom" && <small className='text-danger' role="alert">{errors.DiscountPercent.message}</small>}
 
@@ -645,7 +644,7 @@ function ProductList() {
                 placeholder="productCategoryId"
                 className='form-control mt-2'
                 aria-invalid={errors.productCategoryId ? "true" : "false"}
-                {...register("productCategoryId", { required: "this field is required", })}
+                {...register("productCategoryId", { required: "productCategoryId field is required" })}
               />
               {errors.productCategoryId && errors.productCategoryId.type === "custom" && <small className='text-danger' role="alert">{errors.productCategoryId.message}</small>}
 
@@ -681,7 +680,6 @@ function ProductList() {
 
             </div>
 
-
             {/* Is Sold Individual */}
             <div className="my-2">
               <label htmlFor="" className='form-check-label'>Is Sold Individual ?</label>
@@ -693,11 +691,8 @@ function ProductList() {
                 aria-invalid={errors.IsSoldIndividual ? "true" : "false"}
                 {...register("IsSoldIndividual", { required: false, })}
               />
-              {errors.IsSoldIndividual && errors.IsSoldIndividual.type === "custom" && <small className='text-danger' role="alert">{errors.IsSoldIndividual.message}</small>}
 
             </div>
-
-
 
 
             {/* Poster Image */}
