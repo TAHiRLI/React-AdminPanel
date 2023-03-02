@@ -4,6 +4,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { useForm, Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import ReactPaginate from 'react-paginate';
+import $ from 'jquery';
+
 // Ck Editor 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -13,20 +15,24 @@ import Swal from 'sweetalert2';
 
 import "./product.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faSquarePlus, faTrashCan, faPencil, faXmarkCircle, faRoadCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faSquarePlus, faTrashCan, faPencil, faXmarkCircle, faRoadCircleXmark, faUnderline } from '@fortawesome/free-solid-svg-icons';
+import { ProductCategoryService } from '../../APIs/Services/ProductCategoryService';
 
 
 function ProductList() {
-  const { register, handleSubmit, formState: { errors }, setValue, control, setError, clearErrors } = useForm();
+  const { register, handleSubmit, formState: { errors }, setValue, control, setError, clearErrors, reset } = useForm();
 
   // ==================
   // States 
   // ==================
   const [products, setProducts] = React.useState([]);
+  const [productCategories, setProductCategories] = React.useState([]);
 
   const [isEditShow, invokeEditModal] = React.useState(false);
   const [editModel, setEditModel] = React.useState({});
   const [isCreateShow, invokeCreateModal] = React.useState(false);
+
+  let arr = [];
 
   const [currentPage, setCurrentPage] = React.useState(1);
 
@@ -95,6 +101,9 @@ function ProductList() {
   // Edit
 
   const initEditModal = () => {
+    if(isEditShow == true){
+      reset();
+    }
     return invokeEditModal(!isEditShow);
   };
   const openEditModal = async (id) => {
@@ -106,7 +115,7 @@ function ProductList() {
 
   };
   const edit_OnSubmit = (data) => {
-    console.log(data);
+    console.log("Edit", data);
 
     let stayOpened = false;
     let formData = new FormData();
@@ -118,9 +127,8 @@ function ProductList() {
     formData.append("costPrice", data.CostPrice);
     formData.append("salePrice", data.SalePrice);
     formData.append("discountPercent", data.DiscountPercent);
-    formData.append("PosterImage", data.PosterImage[0]);
-    formData.append("stockStatus", data.IsStocked);
-    formData.append("isFeatured", data.IsFeatured);
+    formData.append("stockStatus", data.StockStatus);
+    formData.append("isFeatured", data.IsFeaturedEdit);
     formData.append("isSoldIndividual", data.IsSoldIndividual);
 
     if (data.PosterImage[0] !== undefined) {
@@ -138,20 +146,26 @@ function ProductList() {
     ProductService.edit(data.Id, formData).then(response => {
     })
       .catch(err => {
-        setError("Name", { type: "custom" }, { shouldFocus: true });
+
         stayOpened = true;
-        alert(err);
-        console.log(err);
+        let { errors } = err.response.data;
+
+        console.log(errors);
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            const element = errors[key];
+            setError(key, { type: 'custom', message: element.join(", ") });
+          }
+        }
       })
       .finally(() => {
+        reset()
         getAllProducts();
         invokeEditModal(stayOpened);
 
       });
   };
 
-
-  //Delete
 
   //Delete
   const deleteProduct = (id) => {
@@ -165,7 +179,7 @@ function ProductList() {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        ProductService.delete(id).then(() => {
+        ProductService.deleteProduct(id).then(() => {
           getAllCategories();
         });
         Swal.fire(
@@ -189,6 +203,52 @@ function ProductList() {
     }
     return content;
   };
+
+  // Send Image delete request
+
+ 
+
+  const deleteImage = React.useCallback((id)=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+         $(`#image-${id}`).parent().addClass("d-none")
+        ProductService.deleteImage(id).then(() => {
+          getAllCategories();
+          getAllProducts();
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          );
+        }).catch(err=>{
+          let { errors } = err.response.data;
+
+          console.log(errors);
+          Swal.fire(
+            'Error!',
+            'Something Went Wrong',
+            'error'
+          );
+          for (const key in errors) {
+            if (Object.hasOwnProperty.call(errors, key)) {
+              const element = errors[key];
+              setError(key, { type: 'custom', message: element.join(", ") });
+            }
+          }
+        })
+      
+     
+      }
+    });
+  },[])
 
 
 
@@ -214,37 +274,49 @@ function ProductList() {
     });
   }, []);
 
-  React.useEffect(() => {
-    getAllProducts();
+  const getAllCategories = React.useCallback(() => {
+    ProductCategoryService.getAll().then(response => {
+
+      setProductCategories(response?.data);
+    });
   }, []);
 
   React.useEffect(() => {
-    if (editModel) {
+    getAllProducts();
+    getAllCategories();
+  }, []);
+
+  React.useEffect(() => {
+    if (isEditShow) {
       setValue("Id", editModel.id);
       setValue("Name", editModel.name);
       setValue("Desc", editModel.desc);
       setValue("DiscountPercent", editModel.discoutPercent);
       setValue("CostPrice", editModel.costPrice);
       setValue("SalePrice", editModel.salePrice);
-      setValue("StockStatus", editModel.stockStatus ?? false);
+      setValue("StockStatus", editModel.stockStatus);
       setValue("productCategoryId", editModel.productCategoryId);
-      setValue("IsSoldIndividual", editModel.isSoldIndividual ?? false);
-      setValue("IsFeatured", editModel.isFetaured ?? false);
-
-
+      setValue("IsSoldIndividual", editModel.isSoldIndividual);
+      setValue("IsFeatured", editModel.isFetaured);
+      if (editModel.stockStatus == undefined) {
+        setValue("StockStatus", false);
+      }
+      if (editModel.isFetaured == undefined) {
+        setValue("IsFeatured", false);
+      }
+      if (editModel.isSoldIndividual == undefined) {
+        setValue("IsSoldIndividual", false);
+      }
     }
+
   }, [editModel, isEditShow]);
-
-
-
-  //
-
-
 
   // Data validation rules
   let Name_maxlength = 30;
   let Desc_maxLength = 300;
 
+
+  
 
   return (
     <div className='d-flex justify-content-center flex-column container'>
@@ -356,11 +428,9 @@ function ProductList() {
                 aria-invalid={errors.Name ? "true" : "false"}
                 {...register("Name", { required: "Name field is required", maxLength: Name_maxlength })}
               />
-              {errors.Name && errors.Name.type === "required" && <small className='text-danger' role="alert">{errors?.Name?.message}</small>}
-              {errors.Name && errors.Name.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Name_maxlength} characters</small>}
+              {errors.Name && <small className='text-danger' role="alert">{errors.Name.message}</small>}
+              
             </div>
-
-
 
             {/* Description */}
             <div className="my-2">
@@ -377,7 +447,7 @@ function ProductList() {
                 }}
 
               />
-              {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Desc_maxLength} characters</small>}
+              {errors.Desc && <small className='text-danger' role="alert">{errors.Desc.message}</small>}
 
             </div>
 
@@ -393,6 +463,8 @@ function ProductList() {
                   aria-invalid={errors.CostPrice ? "true" : "false"}
                   {...register("CostPrice", { required: "CostPrice field is required", min: 0 })}
                 />
+              {errors.CostPrice && <small className='text-danger' role="alert">{errors.CostPrice.message}</small>}
+
               </div>
 
               {/* Sale Price Input */}
@@ -406,6 +478,8 @@ function ProductList() {
                   aria-invalid={errors.SalePrice ? "true" : "false"}
                   {...register("SalePrice", { required: "SalePrice field is required", min: 0 })}
                 />
+              {errors.SalePrice && <small className='text-danger' role="alert">{errors.SalePrice.message}</small>}
+                
               </div>
 
               {/* discount Percent Input */}
@@ -419,6 +493,8 @@ function ProductList() {
                   aria-invalid={errors.DiscountPercent ? "true" : "false"}
                   {...register("DiscountPercent", { required: "DiscountPercent field is required", min: 0, max: 100 })}
                 />
+              {errors.DiscountPercent && <small className='text-danger' role="alert">{errors.DiscountPercent.message}</small>}
+
               </div>
 
             </div>
@@ -426,13 +502,13 @@ function ProductList() {
             {/* CategoryId */}
             <div className="my-2">
               <label htmlFor="" className='form-label'>Category</label>
-              <input
-                type="number"
-                placeholder="productCategoryId"
-                className='form-control mt-2'
-                aria-invalid={errors.productCategoryId ? "true" : "false"}
-                {...register("productCategoryId", { required: "productCategoryId field is required", })}
-              />
+              <select className='form-control'  {...register("productCategoryId", { required: "productCategoryId field is required" })}>
+                {productCategories?.map(category => (
+                  <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
+              </select>
+              {errors.productCategoryId && <small className='text-danger' role="alert">{errors.productCategoryId.message}</small>}
+
             </div>
 
             {/* Stock status */}
@@ -444,7 +520,7 @@ function ProductList() {
                 placeholder="StockStatus"
                 className='d-block'
                 aria-invalid={errors.StockStatus ? "true" : "false"}
-                {...register("StockStatus", { required: false, })}
+                {...register("StockStatus", { required: false })}
               />
 
             </div>
@@ -455,14 +531,13 @@ function ProductList() {
 
               <input
                 type="checkbox"
-                placeholder="IsFeatured"
                 className='d-block'
-                aria-invalid={errors.IsFeatured ? "true" : "false"}
-                {...register("IsFeatured", { required: false, })}
+                aria-invalid={errors.IsFeaturedEdit ? "true" : "false"}
+                {...register("IsFeaturedEdit", { required: false })}
               />
+              {errors.IsFeaturedEdit && errors.IsFeaturedEdit.type === "custom" && <small className='text-danger' role="alert">{errors.IsFeaturedEdit.message}</small>}
 
             </div>
-
 
             {/* Is Sold Individual */}
             <div className="my-2">
@@ -473,13 +548,10 @@ function ProductList() {
                 placeholder="IsSoldIndividual"
                 className='d-block'
                 aria-invalid={errors.IsSoldIndividual ? "true" : "false"}
-                {...register("IsSoldIndividual", { required: false, })}
+                {...register("IsSoldIndividual", { required: false })}
               />
 
             </div>
-
-
-
 
             {/* Poster Image */}
             <div className="my-2 row align-items-center ">
@@ -514,22 +586,27 @@ function ProductList() {
                 />
               </div>
               <div className="col d-flex  overflow-auto flex-wrap">
-                {editModel?.productImages?.map(item => {
-                  if (item?.isMain == false) {
-                    return (
-                      <div key={item.id} className='mx-2 pos-relative p-3'>
-                        <FontAwesomeIcon icon={faXmarkCircle} className='text-danger pointer pos-absolute top-0 right-0' />
-                        <img src={item?.imageUrl} width="100" height="100" className='object-fit-cover' />
-                        {setValue("RemainingImageIds", item.id)}
-                        <input type="hidden" {...register("RemainingImageIds", { required: false })} />
-                      </div>
-                    );
-                  }
-                })}
+                {editModel?.productImages?.map((item) =>
+                  
+                   (item.isMain== false?
+                 ( <div key={item.id} className='mx-2 pos-relative p-3'>
+                  <button onClick={()=>deleteImage(item.id )} type='button' id={"image-"+item.id} className='pointer pos-absolute top-0 right-0 delete-image  border-0 ' >
+                  <FontAwesomeIcon icon={faXmarkCircle} className='text-danger pointer-event-none'  />
+
+                  </button>  
+                    <img src={item?.imageUrl} width="100" height="100" className='object-fit-cover' />
+                  </div>
+                 ):(<></>)
+                   )
+                  
+                )
+                }
               </div>
 
 
             </div>
+
+
           </form>
         </Modal.Body>
         <Modal.Footer>
@@ -584,7 +661,7 @@ function ProductList() {
               />
               {errors.Desc && errors.Desc.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Desc_maxLength} characters</small>}
               {errors.Desc && errors.Desc.type === "custom" && <small className='text-danger' role="alert">{errors.Desc.message}</small>}
-              {errors.Desc  && <small className='text-danger' role="alert">{errors.Desc.message}</small>}
+              {errors.Desc && <small className='text-danger' role="alert">{errors.Desc.message}</small>}
 
             </div>
 
@@ -639,14 +716,14 @@ function ProductList() {
             {/* CategoryId */}
             <div className="my-2">
               <label htmlFor="" className='form-label'>Category</label>
-              <input
-                type="number"
-                placeholder="productCategoryId"
-                className='form-control mt-2'
-                aria-invalid={errors.productCategoryId ? "true" : "false"}
-                {...register("productCategoryId", { required: "productCategoryId field is required" })}
-              />
+
+              <select className='form-control'  {...register("productCategoryId", { required: "productCategoryId field is required" })}>
+                {productCategories?.map(category => (
+                  <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
+              </select>
               {errors.productCategoryId && errors.productCategoryId.type === "custom" && <small className='text-danger' role="alert">{errors.productCategoryId.message}</small>}
+              {errors.productCategoryId && <small className='text-danger' role="alert">{errors.productCategoryId.message}</small>}
 
             </div>
 
