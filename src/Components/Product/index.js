@@ -181,6 +181,7 @@ function ProductList() {
       if (result.isConfirmed) {
         ProductService.deleteProduct(id).then(() => {
           getAllCategories();
+          getAllProducts();
         });
         Swal.fire(
           'Deleted!',
@@ -188,9 +189,68 @@ function ProductList() {
           'success'
         );
       }
-    });
+    }).catch(err=>{
+      let { errors } = err.response.data;
+
+      console.log(errors);
+      Swal.fire(
+        'Error!',
+        'Something Went Wrong',
+        'error'
+      );
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          const element = errors[key];
+          setError(key, { type: 'custom', message: element.join(", ") });
+        }
+      }
+    })  ;
 
   };
+  
+  // Delete image
+    const deleteImage = React.useCallback((id)=>{
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+           $(`#image-${id}`).parent().addClass("d-none")
+          ProductService.deleteImage(id).then(() => {
+            getAllCategories();
+            getAllProducts();
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            );
+          }).catch(err=>{
+            let { errors } = err.response.data;
+  
+            console.log(errors);
+            Swal.fire(
+              'Error!',
+              'Something Went Wrong',
+              'error'
+            );
+            for (const key in errors) {
+              if (Object.hasOwnProperty.call(errors, key)) {
+                const element = errors[key];
+                setError(key, { type: 'custom', message: element.join(", ") });
+              }
+            }
+          })
+        
+       
+        }
+      });
+    },[])
+
 
   // get stars
   const getStars = (rate) => {
@@ -204,51 +264,8 @@ function ProductList() {
     return content;
   };
 
-  // Send Image delete request
 
  
-
-  const deleteImage = React.useCallback((id)=>{
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-         $(`#image-${id}`).parent().addClass("d-none")
-        ProductService.deleteImage(id).then(() => {
-          getAllCategories();
-          getAllProducts();
-          Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          );
-        }).catch(err=>{
-          let { errors } = err.response.data;
-
-          console.log(errors);
-          Swal.fire(
-            'Error!',
-            'Something Went Wrong',
-            'error'
-          );
-          for (const key in errors) {
-            if (Object.hasOwnProperty.call(errors, key)) {
-              const element = errors[key];
-              setError(key, { type: 'custom', message: element.join(", ") });
-            }
-          }
-        })
-      
-     
-      }
-    });
-  },[])
 
 
 
