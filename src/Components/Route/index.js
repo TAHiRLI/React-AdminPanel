@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { ROUTES } from '../../Consts/Routes';
 import BlogList from '../Blog';
+import DepartmentList from '../Department';
 import JwtRoute from '../JwtRoute/JwtRoute';
 import Layout from '../Layout/index';
 import Login from '../Login';
@@ -30,7 +31,8 @@ function Routes() {
                 <JwtRoute path={ROUTES.PRODUCT_CATEGORIES} component={() => <Layout content={ProductCategoryList} />} exact />
                 <JwtRoute path={ROUTES.PRODUCT_REVIEWS} component={() => <Layout content={ProductReviewList} />} exact />
                 <JwtRoute path={ROUTES.BLOGS} component={() => <Layout content={BlogList} />} exact />
-
+                <JwtRoute path={ROUTES.DEPARTMENTS} component={() => <Layout content={DepartmentList} />} exact />
+                
             </Switch>
         </Router>
     );

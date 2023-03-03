@@ -9,5 +9,6 @@ export const ROUTES ={
     SETTINGS:"/Settings",
     PRODUCT_CATEGORIES:"/ProductCategories",
     BLOGS:"/Blogs",
-    PRODUCT_REVIEWS:"/ProductReviews"
+    PRODUCT_REVIEWS:"/ProductReviews",
+    DEPARTMENTS: "/Departments"
 }
