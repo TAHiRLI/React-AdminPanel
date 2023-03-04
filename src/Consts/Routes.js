@@ -10,5 +10,6 @@ export const ROUTES ={
     PRODUCT_CATEGORIES:"/ProductCategories",
     BLOGS:"/Blogs",
     PRODUCT_REVIEWS:"/ProductReviews",
-    DEPARTMENTS: "/Departments"
+    DEPARTMENTS: "/Departments",
+    DOCTORS: "/Doctors"
 }

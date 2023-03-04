@@ -7,6 +7,7 @@ import {
 import { ROUTES } from '../../Consts/Routes';
 import BlogList from '../Blog';
 import DepartmentList from '../Department';
+import DoctorList from '../Doctor';
 import JwtRoute from '../JwtRoute/JwtRoute';
 import Layout from '../Layout/index';
 import Login from '../Login';
@@ -32,6 +33,7 @@ function Routes() {
                 <JwtRoute path={ROUTES.PRODUCT_REVIEWS} component={() => <Layout content={ProductReviewList} />} exact />
                 <JwtRoute path={ROUTES.BLOGS} component={() => <Layout content={BlogList} />} exact />
                 <JwtRoute path={ROUTES.DEPARTMENTS} component={() => <Layout content={DepartmentList} />} exact />
+                <JwtRoute path={ROUTES.DOCTORS} component={() => <Layout content={DoctorList} />} exact />
                 
             </Switch>
         </Router>
