@@ -59,14 +59,16 @@ function DoctorList() {
         formData.append("detailedDesc", data.detailedDesc);
         formData.append("email", data.email);
         formData.append("desc", data.desc);
-        formData.append("isFeatured", data.isFeatrued);
         formData.append("instagram", data.instagram);
         formData.append("facebook", data.facebook);
         formData.append("twitter", data.twitter);
         formData.append("departmentId", data.departmentId);
         formData.append("Image", data.image[0]);
 
-
+        if(data.isFeatrued == undefined)
+        formData.append("isFeatured", false);
+        else
+        formData.append("isFeatured", data.isFeatrued);
 
         DoctorService.create(formData).then(response => {
         })
@@ -166,8 +168,9 @@ function DoctorList() {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                DoctorService.deleteDepartment(id).then(() => {
+                DoctorService.deleteDoctor(id).then(() => {
                     getAllDoctors();
+                    getAllDepartments();
                 });
                 Swal.fire(
                     'Deleted!',
@@ -722,6 +725,8 @@ function DoctorList() {
                                 />
                                 {errors.twitter && <small className='text-danger' role="alert">{errors?.twitter?.message}</small>}
                             </div>
+                              
+
 
                             {/* DepartmentId */}
                             <div className="my-3">
@@ -732,7 +737,16 @@ function DoctorList() {
                                 </select>
                                 {errors.departmentId && <small className='text-danger' role="alert">{errors.departmentId.message}</small>}
                             </div>
-
+   {/* is featured */}
+   <div className="my-3">
+                                <label htmlFor="" className='form-label d-block' >Is Special</label>
+                                <input
+                                    type='checkbox'
+                                    aria-invalid={errors.isFeatured ? "true" : "false"}
+                                    {...register("isFeatured", { required: false })}
+                                />
+                                {errors.isFeatured && <small className='text-danger' role="alert">{errors?.isFeatured?.message}</small>}
+                            </div>
 
                             {/*  Image */}
                             <div className="my-2 row align-items-center ">
