@@ -314,7 +314,7 @@ function DoctorList() {
                                     <div className='d-flex mt-4 justify-content-end'>
 
                                         <button onClick={() => openEditModal(doctor.id)} className="btn btn-primary   m-1 fw-semibold"><FontAwesomeIcon icon={faPencil} /></button>
-                                        <button onClick={() => deleteProduct(doctor.id)} className="btn btn-danger m-1 fw-semibold"><FontAwesomeIcon icon={faTrashCan} /></button>
+                                        <button onClick={() => deleteDoctor(doctor.id)} className="btn btn-danger m-1 fw-semibold"><FontAwesomeIcon icon={faTrashCan} /></button>
                                     </div>
                                 </div>
                             </div>

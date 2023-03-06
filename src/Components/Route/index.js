@@ -11,6 +11,8 @@ import DoctorList from '../Doctor';
 import JwtRoute from '../JwtRoute/JwtRoute';
 import Layout from '../Layout/index';
 import Login from '../Login';
+import OrderList from '../Order';
+import OrderDetails from '../OrderDetails';
 import ProductList from '../Product';
 import ProductCategoryList from '../ProductCategory';
 import ProductReviewList from '../ProductReview';
@@ -34,6 +36,8 @@ function Routes() {
                 <JwtRoute path={ROUTES.BLOGS} component={() => <Layout content={BlogList} />} exact />
                 <JwtRoute path={ROUTES.DEPARTMENTS} component={() => <Layout content={DepartmentList} />} exact />
                 <JwtRoute path={ROUTES.DOCTORS} component={() => <Layout content={DoctorList} />} exact />
+                <JwtRoute path={ROUTES.ORDERS} component={() => <Layout content={OrderList} />} exact />
+                <JwtRoute path={ROUTES.ORDER_DETAILS} component={() => <Layout content={OrderDetails} />} exact />
                 
             </Switch>
         </Router>

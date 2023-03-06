@@ -41,14 +41,12 @@ function JwtRoute({ component: Component, ...rest }) {
    if(isLoading || statusCode == undefined){
     return <div> Loading ...</div>
    }
-   console.log(statusCode)
    if(statusCode == 200){
       return (
         <Route {...rest} render={(props) =>  (<Component />)} />
     );
    }
    else{
-       console.log("worked")
        console.log(isLoading)
        return <Redirect to={ROUTES.LOGIN}/>
 

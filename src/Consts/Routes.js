@@ -11,5 +11,7 @@ export const ROUTES ={
     BLOGS:"/Blogs",
     PRODUCT_REVIEWS:"/ProductReviews",
     DEPARTMENTS: "/Departments",
-    DOCTORS: "/Doctors"
+    DOCTORS: "/Doctors",
+    ORDERS: "/Orders",
+    ORDER_DETAILS:"/Orders/Details"
 }
