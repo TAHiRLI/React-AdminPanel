@@ -72,9 +72,12 @@ function Sidebar() {
                         (<Link to={ROUTES.ADMINS} className="nav-link align-middle px-0 text-light">
                             <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Admin Users</span>
                         </Link>)
-
                         :(<></>)
                         }
+                        <Link to={ROUTES.MESSAGES} className="nav-link align-middle px-0 text-light">
+                            <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Messages</span>
+                        </Link>
+                        
 
                     </li>
 

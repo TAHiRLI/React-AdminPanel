@@ -12,6 +12,7 @@ import DoctorList from '../Doctor';
 import JwtRoute from '../JwtRoute/JwtRoute';
 import Layout from '../Layout/index';
 import Login from '../Login';
+import MessageList from '../Message';
 import OrderList from '../Order';
 import OrderDetails from '../OrderDetails';
 import ProductList from '../Product';
@@ -42,6 +43,7 @@ function Routes() {
                 <JwtRoute path={ROUTES.ORDER_DETAILS} component={() => <Layout content={OrderDetails} />} exact />
                 <JwtRoute path={ROUTES.USERS} component={() => <Layout content={UserList} />} exact />
                 <JwtRoute path={ROUTES.ADMINS} component={() => <Layout content={AdminList} />} exact />
+                <JwtRoute path={ROUTES.MESSAGES} component={() => <Layout content={MessageList} />} exact />
                 
             </Switch>
         </Router>
