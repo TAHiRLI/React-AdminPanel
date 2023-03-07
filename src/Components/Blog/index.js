@@ -1,5 +1,4 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
 
 import './blog.scss';
 import ReactPaginate from 'react-paginate';
@@ -11,7 +10,6 @@ import { BlogService } from '../../APIs/Services/BlogService';
 
 function BlogList() {
 
-  const { register, handleSubmit, formState: { errors }, setValue, control, setError, clearErrors } = useForm();
 
   // ==================
   // States 

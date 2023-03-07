@@ -13,5 +13,7 @@ export const ROUTES ={
     DEPARTMENTS: "/Departments",
     DOCTORS: "/Doctors",
     ORDERS: "/Orders",
-    ORDER_DETAILS:"/Orders/Details"
+    ORDER_DETAILS:"/Orders/Details",
+    USERS:"/Users",
+    ADMINS:"/AdminUsers"
 }

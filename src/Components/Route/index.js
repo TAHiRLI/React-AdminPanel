@@ -5,6 +5,7 @@ import {
     Route,
 } from "react-router-dom";
 import { ROUTES } from '../../Consts/Routes';
+import AdminList from '../Admin';
 import BlogList from '../Blog';
 import DepartmentList from '../Department';
 import DoctorList from '../Doctor';
@@ -17,6 +18,7 @@ import ProductList from '../Product';
 import ProductCategoryList from '../ProductCategory';
 import ProductReviewList from '../ProductReview';
 import SettingList from '../Setting/Index';
+import UserList from '../User';
 
 function Routes() {
     return (
@@ -38,6 +40,8 @@ function Routes() {
                 <JwtRoute path={ROUTES.DOCTORS} component={() => <Layout content={DoctorList} />} exact />
                 <JwtRoute path={ROUTES.ORDERS} component={() => <Layout content={OrderList} />} exact />
                 <JwtRoute path={ROUTES.ORDER_DETAILS} component={() => <Layout content={OrderDetails} />} exact />
+                <JwtRoute path={ROUTES.USERS} component={() => <Layout content={UserList} />} exact />
+                <JwtRoute path={ROUTES.ADMINS} component={() => <Layout content={AdminList} />} exact />
                 
             </Switch>
         </Router>

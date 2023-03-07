@@ -15,6 +15,21 @@ async CheckAuth(token){
         }
     })
 }
+async getRoles(){
+    return await this.get('getRoles', {
+        headers:{
+            authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
+        }
+    })
+}
+
+async getAllRoles(){
+    return await this.get('Roles/All', {
+        headers:{
+            authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
+        }
+    })
+}
 }
 
 export const LoginService = new loginService();
