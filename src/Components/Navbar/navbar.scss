@@ -1,16 +1,11 @@
 .navbar{
       height: 10vh;
-    background-color: orange;
+    background-color: rgb(0, 50, 78);
      &_container{
          padding:  0 2% ;
          width: 100%;
          display: flex;
          justify-content: space-between;
-         &_boxRight{
-            border: 1px solid black;
-         } 
-         &_boxLeft{
-            border: 1px solid black;
-         }
+        
      }
 }
