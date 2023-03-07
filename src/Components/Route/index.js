@@ -19,6 +19,7 @@ import ProductList from '../Product';
 import ProductCategoryList from '../ProductCategory';
 import ProductReviewList from '../ProductReview';
 import SettingList from '../Setting/Index';
+import SliderList from '../Slider';
 import UserList from '../User';
 
 function Routes() {
@@ -44,6 +45,7 @@ function Routes() {
                 <JwtRoute path={ROUTES.USERS} component={() => <Layout content={UserList} />} exact />
                 <JwtRoute path={ROUTES.ADMINS} component={() => <Layout content={AdminList} />} exact />
                 <JwtRoute path={ROUTES.MESSAGES} component={() => <Layout content={MessageList} />} exact />
+                <JwtRoute path={ROUTES.SLIDERS} component={() => <Layout content={SliderList} />} exact />
                 
             </Switch>
         </Router>

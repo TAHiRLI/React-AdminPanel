@@ -77,6 +77,9 @@ function Sidebar() {
                         <Link to={ROUTES.MESSAGES} className="nav-link align-middle px-0 text-light">
                             <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Messages</span>
                         </Link>
+                        <Link to={ROUTES.SLIDERS} className="nav-link align-middle px-0 text-light">
+                            <i className="fs-4 zmdi zmdi-landscape  "></i> <span className="ms-1 d-none d-sm-inline">Sliders</span>
+                        </Link>
                         
 
                     </li>
