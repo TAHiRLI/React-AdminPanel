@@ -18,5 +18,6 @@ export const ROUTES ={
     ADMINS:"/AdminUsers",
     MESSAGES:"/Messagess",
     SLIDERS:"/Sliders",
-    SUBSCRIBERS:"/Subscriptions"
+    SUBSCRIBERS:"/Subscriptions",
+    AMENITY_iMAGES: "/AmenityImages"
 }

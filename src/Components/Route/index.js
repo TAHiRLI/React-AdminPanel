@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { ROUTES } from '../../Consts/Routes';
 import AdminList from '../Admin';
+import AmenityImageList from '../Amenity';
 import BlogList from '../Blog';
 import DepartmentList from '../Department';
 import DoctorList from '../Doctor';
@@ -48,6 +49,7 @@ function Routes() {
                 <JwtRoute path={ROUTES.MESSAGES} component={() => <Layout content={MessageList} />} exact />
                 <JwtRoute path={ROUTES.SLIDERS} component={() => <Layout content={SliderList} />} exact />
                 <JwtRoute path={ROUTES.SUBSCRIBERS} component={() => <Layout content={SubscribtionList} />} exact />
+                <JwtRoute path={ROUTES.AMENITY_iMAGES} component={() => <Layout content={AmenityImageList} />} exact />
                 
             </Switch>
         </Router>
