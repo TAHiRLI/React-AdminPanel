@@ -19,5 +19,6 @@ export const ROUTES ={
     MESSAGES:"/Messagess",
     SLIDERS:"/Sliders",
     SUBSCRIBERS:"/Subscriptions",
-    AMENITY_iMAGES: "/AmenityImages"
+    AMENITY_iMAGES: "/AmenityImages",
+    VALUES:"/Values"
 }

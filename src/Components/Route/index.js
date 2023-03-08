@@ -23,6 +23,7 @@ import SettingList from '../Setting/Index';
 import SliderList from '../Slider';
 import SubscribtionList from '../Subscribtions';
 import UserList from '../User';
+import ValueList from '../Value';
 
 function Routes() {
     return (
@@ -50,6 +51,7 @@ function Routes() {
                 <JwtRoute path={ROUTES.SLIDERS} component={() => <Layout content={SliderList} />} exact />
                 <JwtRoute path={ROUTES.SUBSCRIBERS} component={() => <Layout content={SubscribtionList} />} exact />
                 <JwtRoute path={ROUTES.AMENITY_iMAGES} component={() => <Layout content={AmenityImageList} />} exact />
+                <JwtRoute path={ROUTES.VALUES} component={() => <Layout content={ValueList} />} exact />
                 
             </Switch>
         </Router>

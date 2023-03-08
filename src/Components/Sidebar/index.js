@@ -6,7 +6,7 @@ import { ROUTES } from '../../Consts/Routes';
 import { useGeneralContext } from '../Context/GeneralContext';
 import "./sidebar.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxOpen, faDolly, faGear, faList, faCommentDots, faNewspaper, faSitemap, faUserNurse, faUsers, faUserTie, faEnvelopesBulk, faImages , faAt, faImage} from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen, faDolly, faGear, faList, faCommentDots, faNewspaper, faSitemap, faUserNurse, faUsers, faUserTie, faEnvelopesBulk, faImages , faAt, faImage, faLightbulb} from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
 
@@ -85,6 +85,9 @@ function Sidebar() {
                         </NavLink>
                         <NavLink to={ROUTES.AMENITY_iMAGES} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faImage} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Amenity Images</span>
+                        </NavLink>
+                        <NavLink to={ROUTES.VALUES} className="nav-link align-middle  text-light">
+                            <FontAwesomeIcon icon={faLightbulb} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Values</span>
                         </NavLink>
                     </li>
 
