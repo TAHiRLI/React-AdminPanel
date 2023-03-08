@@ -35,7 +35,7 @@ function BlogList() {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        BlogService.delete(id).then(() => {
+        BlogService.deleteBlog(id).then(() => {
           getAllBlogs();
         });
         Swal.fire(

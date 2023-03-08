@@ -20,6 +20,7 @@ import ProductCategoryList from '../ProductCategory';
 import ProductReviewList from '../ProductReview';
 import SettingList from '../Setting/Index';
 import SliderList from '../Slider';
+import SubscribtionList from '../Subscribtions';
 import UserList from '../User';
 
 function Routes() {
@@ -46,6 +47,7 @@ function Routes() {
                 <JwtRoute path={ROUTES.ADMINS} component={() => <Layout content={AdminList} />} exact />
                 <JwtRoute path={ROUTES.MESSAGES} component={() => <Layout content={MessageList} />} exact />
                 <JwtRoute path={ROUTES.SLIDERS} component={() => <Layout content={SliderList} />} exact />
+                <JwtRoute path={ROUTES.SUBSCRIBERS} component={() => <Layout content={SubscribtionList} />} exact />
                 
             </Switch>
         </Router>

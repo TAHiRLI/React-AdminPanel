@@ -2,6 +2,8 @@ import React from 'react';
 import { SettingService } from '../../APIs/Services/SettingService';
 import { Modal, Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { faPencil} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function SettingList() {
 
@@ -58,7 +60,7 @@ function SettingList() {
 
 
    
-
+    let order = 1;
 
 
 
@@ -111,11 +113,11 @@ function SettingList() {
                         settings.map(item => (
 
                             <tr key={item.id}>
-                                <td>#</td>
+                                <td>{order++}</td>
                                 <td>{item.key}</td>
                                 <td>{item.value}</td>
                                 <td>
-                                    <button onClick={()=>{openEditModal(item.id)}} className='badge bg-info mx-2 ' >edit</button>
+                                    <button onClick={()=>{openEditModal(item.id)}} className='btn btn-primary mx-2 ' ><FontAwesomeIcon icon={faPencil}/></button>
                                 </td>
                             </tr>
                         ))

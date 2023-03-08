@@ -216,7 +216,7 @@ function SliderList() {
     let BtnUrl_maxlength = 200;
 
     return (
-        <div className='d-flex justify-content-center flex-column overflow-scroll'>
+        <div className='d-flex justify-content-center flex-column  overflow-auto'>
             <div className='text-end'>
                 <Button onClick={initCreateModal}><FontAwesomeIcon icon={faSquarePlus} /></Button>
             </div>
@@ -237,7 +237,7 @@ function SliderList() {
                     {
                         slidersToDisplay.map(slider => (
 
-                            <tr className='text-nowrap' key={slider.id}>
+                            <tr  key={slider.id}>
                                 <td>{order++}</td>
                                 <td><img src={slider.imageUrl} width='100' height='70' /></td>
                                 <td>{slider.title}</td>
@@ -245,7 +245,7 @@ function SliderList() {
                                 <td>{slider.btnText}</td>
                                 <td>{slider.btnUrl}</td>
                                 <td>{slider.order}</td>
-                                <td>
+                                <td className='text-nowrap'>
                                     <button onClick={() => openEditModal(slider.id)} className="btn btn-primary   m-1 fw-semibold"><FontAwesomeIcon icon={faPencil} /></button>
                                     <button onClick={() => deleteSlider(slider.id)} className="btn btn-danger   m-1 fw-semibold"><FontAwesomeIcon icon={faTrashCan} /></button>
 

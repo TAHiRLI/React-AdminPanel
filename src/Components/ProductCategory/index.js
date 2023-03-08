@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import { Modal, Button } from 'react-bootstrap';
 import { ProductCategoryService } from '../../APIs/Services/ProductCategoryService';
 import ReactPaginate from 'react-paginate';
-import Swal from 'sweetalert2'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight,faSquarePlus } from '@fortawesome/free-solid-svg-icons'
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 
 
 function ProductCategoryList() {
@@ -111,23 +111,23 @@ function ProductCategoryList() {
           'Deleted!',
           'Your file has been deleted.',
           'success'
-        )
+        );
       }
-    })
-   
+    });
+
   };
 
-//Pagination
-const handlePageChange = (data) => {
-  const selectedPage = data.selected + 1;
-  setCurrentPage(selectedPage);
-};
-const itemsPerPage = 2;
+  //Pagination
+  const handlePageChange = (data) => {
+    const selectedPage = data.selected + 1;
+    setCurrentPage(selectedPage);
+  };
+  const itemsPerPage = 2;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const categoriesToDisplay = productCategories.slice(startIndex, endIndex);
-  
-let order = startIndex+1;
+
+  let order = startIndex + 1;
 
   // ==================
   // hooks 
@@ -164,9 +164,9 @@ let order = startIndex+1;
   return (
     <div className='d-flex justify-content-center flex-column '>
       <div className='text-end'>
-        <Button onClick={initCreateModal}><FontAwesomeIcon icon={faSquarePlus}/></Button>
+        <Button onClick={initCreateModal}><FontAwesomeIcon icon={faSquarePlus} /></Button>
       </div>
-      <table className='table table-light overflow-scroll'>
+      <table className='table table-light '>
         <thead>
           <tr>
             <th>No</th>
@@ -184,12 +184,12 @@ let order = startIndex+1;
                 <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td className='d-flex justify-content-center'>
-                  <button  onClick={() => openEditModal(item.id)} className='btn btn-info mx-2 ' ><i className='zmdi zmdi-edit'></i></button>
-                  <button  onClick={()=> deleteCategory(item.id)} className='btn btn-danger ' ><i className='zmdi zmdi-delete'></i></button>
+                  <button onClick={() => openEditModal(item.id)} className='btn btn-info mx-2 ' ><i className='zmdi zmdi-edit'></i></button>
+                  <button onClick={() => deleteCategory(item.id)} className='btn btn-danger ' ><i className='zmdi zmdi-delete'></i></button>
                 </td>
               </tr>
 
-              
+
             ))
           }
 
@@ -199,29 +199,29 @@ let order = startIndex+1;
       {/* Pagination */}
 
       <br></br>
-        <div>
+      {Math.ceil(productCategories.length / itemsPerPage) !== 1 ? (<div>
+        <ReactPaginate
+          pageCount={Math.ceil(productCategories.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+          containerClassName="pagination justify-content-center"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          activeClassName="active"
+          previousClassName="page-item"
+          nextClassName="page-item"
+          previousLinkClassName="page-link"
+          nextLinkClassName="page-link"
+          disabledClassName="disabled d-none"
+          breakLabel={'...'}
+          marginPagesDisplayed={0}
+          pageRangeDisplayed={5}
+          breakClassName={'page-link'}
+          disableInitialCallback={true}
+          previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
+          nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
+        />
+      </div>) : (<></>)}
 
-      <ReactPaginate
-        pageCount={Math.ceil(productCategories.length/itemsPerPage)}
-        onPageChange={handlePageChange}
-      containerClassName="pagination justify-content-center"
-      pageClassName="page-item"
-      pageLinkClassName="page-link"
-      activeClassName="active"
-      previousClassName="page-item"
-      nextClassName="page-item"
-      previousLinkClassName="page-link"
-      nextLinkClassName="page-link"
-      disabledClassName="disabled d-none"
-         breakLabel={'...'}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        breakClassName={'break-me'}
-        disableInitialCallback={true}
-      previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
-      nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
-      />
-        </div>
 
       {/* Edit Modal*/}
 
@@ -231,7 +231,7 @@ let order = startIndex+1;
         </Modal.Header>
         <Modal.Body>
           <form id='editCategory' onSubmit={handleSubmit(edit_OnSubmit)} >
-          <input type="hidden"
+            <input type="hidden"
               {...register("id")}
             />
 

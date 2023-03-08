@@ -9,7 +9,7 @@ function Layout({ content: Component, ...rest }) {
 
         <div className='row flex-nowrap '>
           <div className='col-auto col-md-3 col-xl-2 p-0 bg-dark sidebar' id='sidebar'> <Sidebar /></div>
-          <div className='col p-3 bg-light'> <Component /></div>
+          <div className='col p-3 bg-light overflow-auto'> <Component /></div>
         </div>
       </div>
 

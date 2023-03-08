@@ -1,6 +1,6 @@
 import { HttpClient } from "../HttpClient/httpClient";
 
-class blogService extends HttpClient{
+class subscriptionService extends HttpClient{
 constructor() {
     super(`https://localhost:44317/api`);
 }
@@ -8,25 +8,15 @@ constructor() {
 
 
 async getAll(){
-    return await this.get(`Blogs/all`, {
+    return await this.get(`Subscriptions/all`, {
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }
     })
 }
 
-async getById(id){
-    return  await this.get(`Blogs/${id}`,{
-        headers:{
-            authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
-        }} )
-}
-
-
-
-
-async deleteBlog (id){
-    return await this.delete("Blogs",id, {
+async deleteSubscribe (id){
+    return await this.delete("Subscriptions",id, {
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }});
@@ -35,4 +25,4 @@ async deleteBlog (id){
 }
 
 
-export const BlogService = new blogService();
+export const SubscriptionService = new subscriptionService();
