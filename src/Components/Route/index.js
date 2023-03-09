@@ -8,6 +8,7 @@ import { ROUTES } from '../../Consts/Routes';
 import AdminList from '../Admin';
 import AmenityImageList from '../Amenity';
 import BlogList from '../Blog';
+import BlogCategoryList from '../BlogCategory';
 import DepartmentList from '../Department';
 import DoctorList from '../Doctor';
 import JwtRoute from '../JwtRoute/JwtRoute';
@@ -52,6 +53,7 @@ function Routes() {
                 <JwtRoute path={ROUTES.SUBSCRIBERS} component={() => <Layout content={SubscribtionList} />} exact />
                 <JwtRoute path={ROUTES.AMENITY_iMAGES} component={() => <Layout content={AmenityImageList} />} exact />
                 <JwtRoute path={ROUTES.VALUES} component={() => <Layout content={ValueList} />} exact />
+                <JwtRoute path={ROUTES.BLOG_CATEGORIES} component={() => <Layout content={BlogCategoryList} />} exact />
                 
             </Switch>
         </Router>

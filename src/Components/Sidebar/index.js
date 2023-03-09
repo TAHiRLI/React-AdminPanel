@@ -56,6 +56,9 @@ function Sidebar() {
                         <NavLink to={ROUTES.BLOGS} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faNewspaper} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Blogs</span>
                         </NavLink>
+                        <NavLink to={ROUTES.BLOG_CATEGORIES} className="nav-link align-middle  text-light">
+                            <FontAwesomeIcon icon={faList} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Blog Categories</span>
+                        </NavLink>
                         <NavLink to={ROUTES.DEPARTMENTS} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faSitemap} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Departments</span>
                         </NavLink>

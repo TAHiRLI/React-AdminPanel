@@ -20,5 +20,6 @@ export const ROUTES ={
     SLIDERS:"/Sliders",
     SUBSCRIBERS:"/Subscriptions",
     AMENITY_iMAGES: "/AmenityImages",
-    VALUES:"/Values"
+    VALUES:"/Values",
+    BLOG_CATEGORIES:"/BlogCategoires"
 }
