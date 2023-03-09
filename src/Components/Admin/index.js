@@ -184,8 +184,6 @@ function AdminList() {
                         <th>UserName</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Role</th>
-                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -199,8 +197,6 @@ function AdminList() {
                                 <td>{user.userName}</td>
                                 <td>{user.email}</td>
                                 <td>{user.phoneNumber ?? "Not defined"}</td>
-                                <td>{user.isAdmin == null ? "Doctor" : user.isAdmin == false ? "User" : "Admin"}</td>
-                                <td>{user.connectionId != null ? (<div className='badge bg-success'>Online</div>) : (<div className='badge bg-secondary'>Offline</div>)}</td>
                                 <td>
 
                                     <button onClick={() => openEditModal(user.id)} className="btn btn-primary   m-1 fw-semibold"><FontAwesomeIcon icon={faPencil} /></button>

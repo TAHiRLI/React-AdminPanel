@@ -122,7 +122,7 @@ function ProductCategoryList() {
     const selectedPage = data.selected + 1;
     setCurrentPage(selectedPage);
   };
-  const itemsPerPage = 2;
+  const itemsPerPage = 5;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const categoriesToDisplay = productCategories.slice(startIndex, endIndex);
@@ -170,7 +170,6 @@ function ProductCategoryList() {
         <thead>
           <tr>
             <th>No</th>
-            <th>Id</th>
             <th>Name</th>
             <th className='text-center'>Action</th>
           </tr>
@@ -181,7 +180,6 @@ function ProductCategoryList() {
 
               <tr className='text-nowrap' key={item.id}>
                 <td>{order++}</td>
-                <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td className='d-flex justify-content-center'>
                   <button onClick={() => openEditModal(item.id)} className='btn btn-info mx-2 ' ><i className='zmdi zmdi-edit'></i></button>
@@ -241,8 +239,7 @@ function ProductCategoryList() {
               aria-invalid={errors.name ? "true" : "false"}
               {...register("name", { required: "this field is required", maxLength: Name_maxlength })}
             />
-            {errors.name && errors.name.type === "required" && <small className='text-danger' role="alert">{errors?.name?.message}</small>}
-            {errors.name && errors.name.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Name_maxlength} characters</small>}
+            {errors.name  && <small className='text-danger' role="alert">{errors?.name?.message}</small>}
 
 
 
@@ -270,8 +267,7 @@ function ProductCategoryList() {
               aria-invalid={errors.name ? "true" : "false"}
               {...register("name", { required: "this field is required", maxLength: Name_maxlength })}
             />
-            {errors.name && errors.name.type === "required" && <small className='text-danger' role="alert">{errors?.name?.message}</small>}
-            {errors.name && errors.name.type === "maxLength" && <small className='text-danger' role="alert">Max length must be {Name_maxlength} characters</small>}
+            {errors.name && <small className='text-danger' role="alert">{errors?.name?.message}</small>}
 
 
 

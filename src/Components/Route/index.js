@@ -9,6 +9,7 @@ import AdminList from '../Admin';
 import AmenityImageList from '../Amenity';
 import BlogList from '../Blog';
 import BlogCategoryList from '../BlogCategory';
+import Dashboard from '../Dashboard';
 import DepartmentList from '../Department';
 import DoctorList from '../Doctor';
 import JwtRoute from '../JwtRoute/JwtRoute';
@@ -33,15 +34,14 @@ function Routes() {
                 <Route path={ROUTES.LOGIN} exact>
                     <Login />
                 </Route>
-                <JwtRoute path={ROUTES.DASHBOARD.MAIN_PATH} exact>
-                    <div> Dashboard here</div>
-                </JwtRoute>
-
+              
+                <JwtRoute path={ROUTES.DASHBOARD} component={() => <Layout content={Dashboard} />} exact />
                 <JwtRoute path={ROUTES.SETTINGS} component={() => <Layout content={SettingList} />} exact />
                 <JwtRoute path={ROUTES.PRODUCTS} component={() => <Layout content={ProductList} />} exact />
                 <JwtRoute path={ROUTES.PRODUCT_CATEGORIES} component={() => <Layout content={ProductCategoryList} />} exact />
                 <JwtRoute path={ROUTES.PRODUCT_REVIEWS} component={() => <Layout content={ProductReviewList} />} exact />
                 <JwtRoute path={ROUTES.BLOGS} component={() => <Layout content={BlogList} />} exact />
+                <JwtRoute path={ROUTES.BLOG_CATEGORIES} component={() => <Layout content={BlogCategoryList} />} exact />
                 <JwtRoute path={ROUTES.DEPARTMENTS} component={() => <Layout content={DepartmentList} />} exact />
                 <JwtRoute path={ROUTES.DOCTORS} component={() => <Layout content={DoctorList} />} exact />
                 <JwtRoute path={ROUTES.ORDERS} component={() => <Layout content={OrderList} />} exact />
@@ -53,7 +53,6 @@ function Routes() {
                 <JwtRoute path={ROUTES.SUBSCRIBERS} component={() => <Layout content={SubscribtionList} />} exact />
                 <JwtRoute path={ROUTES.AMENITY_iMAGES} component={() => <Layout content={AmenityImageList} />} exact />
                 <JwtRoute path={ROUTES.VALUES} component={() => <Layout content={ValueList} />} exact />
-                <JwtRoute path={ROUTES.BLOG_CATEGORIES} component={() => <Layout content={BlogCategoryList} />} exact />
                 
             </Switch>
         </Router>

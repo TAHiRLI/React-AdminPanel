@@ -6,7 +6,7 @@ import { ROUTES } from '../../Consts/Routes';
 import { useGeneralContext } from '../Context/GeneralContext';
 import "./sidebar.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxOpen, faDolly, faGear, faList, faCommentDots, faNewspaper, faSitemap, faUserNurse, faUsers, faUserTie, faEnvelopesBulk, faImages , faAt, faImage, faLightbulb} from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen, faDolly, faGear, faList, faCommentDots, faNewspaper, faSitemap, faUserNurse, faUsers, faUserTie, faEnvelopesBulk, faImages, faAt, faImage, faLightbulb, faChartLine } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
 
@@ -41,8 +41,8 @@ function Sidebar() {
             <div className="d-flex  flex-column align-items-center align-items-sm-start pt-2 text-white min-vh-100">
                 <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li className="nav-item ">
-                        <NavLink to={ROUTES.SETTINGS} className="nav-link align-middle  text-light">
-                            <FontAwesomeIcon icon={faGear} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Settings</span>
+                        <NavLink to={ROUTES.DASHBOARD} className="nav-link align-middle  text-light">
+                            <FontAwesomeIcon icon={faChartLine} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Dashboard</span>
                         </NavLink>
                         <NavLink to={ROUTES.PRODUCTS} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faBoxOpen} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Products</span>
@@ -68,15 +68,7 @@ function Sidebar() {
                         <NavLink to={ROUTES.ORDERS} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faDolly} className="pe-2 sidebar-icon" /><span className="ms-1 d-none d-sm-inline">Orders</span>
                         </NavLink>
-                        <NavLink to={ROUTES.USERS} className="nav-link align-middle  text-light">
-                            <FontAwesomeIcon icon={faUsers} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Users</span>
-                        </NavLink>
-                        {userRoles.includes("SuperAdmin") ?
-                            (<NavLink to={ROUTES.ADMINS} className="nav-link align-middle  text-light">
-                                <FontAwesomeIcon icon={faUserTie} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Admin Users</span>
-                            </NavLink>)
-                            : (<></>)
-                        }
+                     
                         <NavLink to={ROUTES.MESSAGES} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faEnvelopesBulk} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Messages</span>
                         </NavLink>
@@ -91,6 +83,18 @@ function Sidebar() {
                         </NavLink>
                         <NavLink to={ROUTES.VALUES} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faLightbulb} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Values</span>
+                        </NavLink>
+                        <NavLink to={ROUTES.USERS} className="nav-link align-middle  text-light">
+                            <FontAwesomeIcon icon={faUsers} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Users</span>
+                        </NavLink>
+                        {userRoles.includes("SuperAdmin") ?
+                            (<NavLink to={ROUTES.ADMINS} className="nav-link align-middle  text-light">
+                                <FontAwesomeIcon icon={faUserTie} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Admin Users</span>
+                            </NavLink>)
+                            : (<></>)
+                        }
+                        <NavLink to={ROUTES.SETTINGS} className="nav-link align-middle  text-light">
+                            <FontAwesomeIcon icon={faGear} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Settings</span>
                         </NavLink>
                     </li>
 
