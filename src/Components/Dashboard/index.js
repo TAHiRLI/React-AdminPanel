@@ -1,41 +1,121 @@
 import React from 'react';
 import { Line, Doughnut, Circle } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
+import { DashboardService } from '../../APIs/Services/DashboardService';
 
 function Dashboard() {
 
+    const [topCategories, setTopCategories] = React.useState([]);
+    const [topProducts, setTopProducts] = React.useState([]);
+    const [topDoctors, setTopDoctors] = React.useState([]);
+    const [reviews, setReviews] = React.useState([]);
+    const [sales, setSales] = React.useState([]);
+    const [salesSummary, setSalesSummary] = React.useState([]);
+    const [appointmentPayments, setAppointmentPayments] = React.useState([]);
+
+
+
+    // productsPerCategorie 
+    const getTopCategoires = React.useCallback(() => {
+        DashboardService.GetTopSoldCategories().then((res) => {
+            console.log("Categoires", res.data);
+            setTopCategories(res.data);
+        });
+    });
+
+
+    // products
+    const getTopProducts = React.useCallback(() => {
+        DashboardService.GetTopSoldProducts().then((res) => {
+            console.log("Products", res.data);
+            setTopProducts(res.data);
+        });
+    });
+
+    // Reviews
+    const getReviews = React.useCallback(() => {
+        DashboardService.GetReviews().then((res) => {
+            console.log("Reviews", res.data);
+            setReviews(res.data);
+        });
+    });
+
+    // Sales
+    const getSales = React.useCallback(() => {
+        DashboardService.GetSales().then((res) => {
+            console.log("Sales", res.data);
+            setSales(res.data);
+        });
+    });
+
+    // Appointment Payments
+    const getAppointmentPayments = React.useCallback(() => {
+        DashboardService.GetAppointmentPayments().then((res) => {
+            console.log("AppoitmentPayments", res.data);
+            setAppointmentPayments(res.data);
+        });
+    });
+
+    // Top Doctors
+    const getTopDoctors = React.useCallback(()=>{
+        DashboardService.GetTopDoctors().then((res) => {
+            console.log("Doctors", res.data);
+            setTopDoctors(res.data);
+        });
+    })
+
+    // Sales Summary
+
+    const getSalesSummary = React.useCallback(()=>{
+        DashboardService.GetSalesSummary().then((res) => {
+            console.log("SalesSummary", res.data);
+            setSalesSummary(res.data);
+        });
+    })
+
+    React.useEffect(() => {
+        getAppointmentPayments();
+        getTopCategoires();
+        getTopProducts();
+        getSalesSummary();
+        getTopDoctors();
+        getReviews();
+        getSales();
+    }, []);
+
+
+
+
 
     //=====================
-    // productsPerCategorie 
+    // ProductsPerCategorie 
     //=====================
 
     const productsPerCategorieData = {
-        labels: [
-            'Red',
-            'Blue',
-            'Yellow'
-        ],
+        labels: topCategories.map(item => item.categoryName),
         datasets: [{
-            data: [300, 50, 100],
+            data: topCategories.map(item => item.totalRevenue),
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
+                'rgb(255, 205, 86)',
+                'rgb(105, 205, 86)',
             ],
-            hoverOffset: 4
+            hoverOffset: 10
         }]
     };
 
+
     //=====================
-    // Appointments
+    // Reviews
     //=====================
 
-    const appointemtnsData = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    const reviewsData = {
+        labels: Object.keys(reviews?.allReviews ?? {}),
         datasets: [
             {
-                label: 'Sales',
-                data: [5000, 8000, 6000, 7000, 9000, 8500],
+                label: 'Approved',
+                data: Object.values(reviews?.approved ?? {}),
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1,
@@ -43,8 +123,8 @@ function Dashboard() {
                 fill: true
             },
             {
-                label: 'Expenses',
-                data: [3000, 5000, 4000, 6000, 5500, 7000],
+                label: 'Rejected',
+                data: Object.values(reviews?.rejected ?? {}),
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1,
@@ -75,53 +155,19 @@ function Dashboard() {
             cornerRadius: 4,
             displayColors: false,
         },
-        scales: {
-            xAxes: [
-                {
-                    gridLines: {
-                        drawBorder: false,
-                        display: false,
-                    },
-                    ticks: {
-                        fontColor: '#666',
-                        fontSize: 14,
-                        fontStyle: 'bold',
-                        maxRotation: 0,
-                        minRotation: 0,
-                    },
-                },
-            ],
-            yAxes: [
-                {
-                    gridLines: {
-                        drawBorder: false,
-                        color: '#eee',
-                        zeroLineColor: '#eee',
-                        borderDash: [2],
-                        borderDashOffset: [2],
-                    },
-                    ticks: {
-                        fontColor: '#666',
-                        fontSize: 14,
-                        fontStyle: 'bold',
-                        beginAtZero: true,
-                        padding: 15,
-                    },
-                },
-            ],
-        },
+
     };
 
 
     //=====================
-    // main Line
+    // General statistics
     //=====================
-    const data = {
-        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10'],
+    const generalStatistics = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
         datasets: [
             {
-                label: 'Visitors',
-                data: [150, 120, 45, 115, 190, 115, 280, 260, 285, 210],
+                label: 'Sales',
+                data: Object.values(sales),
                 backgroundColor: 'rgba(0, 123, 255, 0.2)',
                 borderColor: 'rgba(0, 123, 255, 1)',
                 fill: true,
@@ -129,10 +175,10 @@ function Dashboard() {
                 borderWidth: 2
             },
             {
-                label: 'Visitors',
-                data: [10, 20, 45, 15, 90, 15, 80, 60, 285, 10],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                label: 'Appointment Payment',
+                data: Object.values(appointmentPayments),
+                backgroundColor: 'rgba(51, 255, 147, 0.2)',
+                borderColor: 'rgba(51, 255, 147, 1)',
                 fill: true,
                 tension: 0.4,
                 borderWidth: 2
@@ -149,26 +195,7 @@ function Dashboard() {
         legend: {
             display: false
         },
-        scales: {
-            xAxes: [{
-                display: false,
-                gridLines: {
-                    display: false,
-                }
-            }],
-            yAxes: [{
-                display: false,
-                ticks: {
-                    beginAtZero: true,
-                    max: 100,
-                    stepSize: 20,
-                    display: false,
-                },
-                gridLines: {
-                    display: false,
-                },
-            }]
-        },
+
         tooltips: {
             enabled: false
         },
@@ -211,7 +238,7 @@ function Dashboard() {
                 {/* Doctor Appointments */}
                 <div className="col-lg-4 mt-3 mt-lg-0  ">
                     <div className="card p-2">
-                        <Line options={appointemtnsOptions} data={appointemtnsData} />
+                        <Line options={appointemtnsOptions} data={reviewsData} />
 
                     </div>
                 </div>
@@ -219,21 +246,21 @@ function Dashboard() {
                 <div className="col-lg-4 mt-3 mt-lg-0   ">
                     <div className="card p-2 h-100">
 
-                        <div class="card-body">
-                            <h5 class="card-title">Sales Summary</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item  border-0 d-flex justify-content-between align-items-center">
+                        <div className="card-body">
+                            <h5 className="card-title">Sales Summary</h5>
+                            <ul className="list-group">
+                                <li className="list-group-item  border-0 d-flex justify-content-between align-items-center">
                                     <span className='fw-semibold'>Total Sales</span>
-                                    <span class="badge bg-primary badge-pill ">$1000</span>
+                                    <span className="badge bg-primary badge-pill ">${salesSummary.totalSale}</span>
                                 </li>
-                                <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
                                     <span className='fw-semibold'> Total Revenue</span>
-                                    <span class="badge bg-success badge-pill">$50,000</span>
+                                    <span className="badge bg-success badge-pill">${salesSummary.totalRevenue}</span>
                                 </li>
-                                <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                                <li className="list-group-item border-0 d-flex justify-content-between align-items-center">
                                     <span className='fw-semibold'>Average Order Value</span>
 
-                                    <span class="badge bg-info badge-pill">$50</span>
+                                    <span className="badge bg-info badge-pill">${salesSummary.averageOrder}</span>
                                 </li>
                             </ul>
                         </div>
@@ -254,45 +281,24 @@ function Dashboard() {
 
                         <table className='table card-body'>
                             <thead>
-                                <th>Product</th>
-                                <th className='text-end'>Total</th>
+                                <tr>
+
+                                    <th>Product</th>
+                                    <th>Count</th>
+                                    <th className='text-end'>Total</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                {/* Item */}
-                                <tr>
-                                    <td className='product-name fw-semibold text-primary'>Product name</td>
-                                    <td className='product-totalPrice text-muted small text-end'>$800</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='product-name fw-semibold text-primary'>Product name</td>
-                                    <td className='product-totalPrice text-muted small text-end'>$800</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='product-name fw-semibold text-primary'>Product name</td>
-                                    <td className='product-totalPrice text-muted small text-end'>$800</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='product-name fw-semibold text-primary'>Product name</td>
-                                    <td className='product-totalPrice text-muted small text-end'>$800</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='product-name fw-semibold text-primary'>Product name</td>
-                                    <td className='product-totalPrice text-muted small text-end'>$800</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='product-name fw-semibold text-primary'>Product name</td>
-                                    <td className='product-totalPrice text-muted small text-end'>$800</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='product-name fw-semibold text-primary'>Product name</td>
-                                    <td className='product-totalPrice text-muted small text-end'>$800</td>
-                                </tr>
+
+                                {
+                                    topProducts.map((product, i) => (
+                                        <tr key={i}>
+                                            <td className='product-name fw-semibold text-primary'>{product.product?.name}</td>
+                                            <td className='product-totalPrice text-muted small text-end'>{product.countOfOrders}x</td>
+                                            <td className='product-totalPrice text-muted small text-end'>${product.totalIncome}</td>
+                                        </tr>
+                                    ))
+                                }
 
                             </tbody>
                         </table>
@@ -300,7 +306,7 @@ function Dashboard() {
                 </div>
                 <div className="col-lg-6 ">
 
-                    <Line options={progressLineOptions} data={data} className='h-100' />
+                    <Line options={progressLineOptions} data={generalStatistics} className='h-100' />
                 </div>
                 <div className="col-lg-3">
                     <div className="card mt-4 p-3">
@@ -309,45 +315,22 @@ function Dashboard() {
                         </div>
                         <table className='table card-body'>
                             <thead>
-                                <th>Doctor</th>
-                                <th className='text-end'>Total</th>
+                                <tr>
+
+                                    <th>Doctor</th>
+                                    <th>Count</th>
+                                    <th className='text-end'>Total</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                {/* Item */}
-                                <tr>
-                                    <td className='Doctor-name fw-semibold text-primary'>Doctor name</td>
-                                    <td className=' text-muted small text-end'>15</td>
+                            {topDoctors.map(doctor=>(
+                                 <tr key={doctor.id}>
+                                    <td className='Doctor-name fw-semibold text-primary'>{doctor.name}</td>
+                                    <td className=' text-muted small text-end'>{doctor.countOfAppointments}x</td>
+                                    <td className=' text-muted small text-end'>${doctor.totalPaid}</td>
                                 </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='Doctor-name fw-semibold text-primary'>Doctor name</td>
-                                    <td className=' text-muted small text-end'>15</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='Doctor-name fw-semibold text-primary'>Doctor name</td>
-                                    <td className=' text-muted small text-end'>15</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='Doctor-name fw-semibold text-primary'>Doctor name</td>
-                                    <td className=' text-muted small text-end'>15</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='Doctor-name fw-semibold text-primary'>Doctor name</td>
-                                    <td className=' text-muted small text-end'>15</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='Doctor-name fw-semibold text-primary'>Doctor name</td>
-                                    <td className=' text-muted small text-end'>15</td>
-                                </tr>
-                                {/* Item */}
-                                <tr>
-                                    <td className='Doctor-name fw-semibold text-primary'>Doctor name</td>
-                                    <td className=' text-muted small text-end'>15</td>
-                                </tr>
+                            ))}
+                               
 
                             </tbody>
                         </table>
