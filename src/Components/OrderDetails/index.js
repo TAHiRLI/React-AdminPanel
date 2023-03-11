@@ -3,11 +3,19 @@ import { useLocation } from 'react-router-dom';
 import { OrderService } from '../../APIs/Services/OrderService';
 import Swal from 'sweetalert2';
 
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../Loading';
+
+
 function OrderDetails() {
+    const { isLoading } = useSelector(state => state);
+    const myDispatch = useDispatch();
+
     const location = useLocation();
     let id = location.state.id;
 
     const [order, setOrder] = React.useState({});
+    const [loading, setLoading] = React.useState(false);
 
     const getOrder = React.useCallback((id) => {
         OrderService.getById(id).then(response => {
@@ -16,73 +24,78 @@ function OrderDetails() {
         });
     }, []);
 
-    const rejectOrder = React.useCallback((orderId)=>{
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
-            if (result.isConfirmed) {
-             OrderService.rejectOrder(orderId).then(() => {
-                getOrder(id);
-                Swal.fire(
-                    'Rejected!',
-                    'Order has been rejected.',
-                    'success'
-                  );
-              })
-              .catch(err=>{
-                Swal.fire(
-                    'Error!',
-                    'Something went wrong',
-                    'error'
-                  );
-              });
-            
-            }
-          });
-    })
+    const approveOrder = React.useCallback(async (orderId) => {
 
-    const approveOrder =  React.useCallback((orderId)=>{
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            });
+
             if (result.isConfirmed) {
-                // set loading 
-             OrderService.approveOrder(orderId).then(() => {
+                setLoading(true);
+                await OrderService.approveOrder(orderId);
                 getOrder(id);
-                //stop loading
                 Swal.fire(
                     'Approved!',
                     'Order has been Approved.',
                     'success'
-                  );
-              })
-              .catch(err=>{
-                Swal.fire(
-                    'Error!',
-                    'Something went wrong',
-                    'error'
-                  );
-              });
-            
+                );
             }
-          });
-    })
+        } catch (err) {
+            Swal.fire(
+                'Error!',
+                'Something went wrong',
+                'error'
+            );
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const rejectOrder = React.useCallback(async (orderId) => {
+
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            });
+
+            if (result.isConfirmed) {
+                setLoading(true);
+                await OrderService.rejectOrder(orderId);
+                getOrder(id);
+                Swal.fire(
+                    'Rejected!',
+                    'Order has been Rejected.',
+                    'success'
+                );
+            }
+        } catch (err) {
+            Swal.fire(
+                'Error!',
+                'Something went wrong',
+                'error'
+            );
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     React.useEffect(() => {
         getOrder(id);
     }, []);
+
 
     return (
         <div className='container-fluid'>
@@ -106,7 +119,7 @@ function OrderDetails() {
                                 order.orderItems?.map((item, i) => (
 
                                     <tr className='text-nowrap ' key={item.id}>
-                                        <td className='align-middle'>{i+1}</td>
+                                        <td className='align-middle'>{i + 1}</td>
                                         <td>
                                             <img src={item.product?.imageUrl} width="70" height="70"></img>
                                         </td>
@@ -178,13 +191,16 @@ function OrderDetails() {
                         </div>
 
                         {order.orderStatus == null ? (<><div className="d-flex justify-content-end card-footer ">
-                            <button onClick={()=> rejectOrder(order.id)} className='mx-2 btn btn-danger'>Reject</button>
-                            <button onClick={()=> approveOrder(order.id)} className='mx-2 btn btn-success'>Approve</button>
+                            <button onClick={() => rejectOrder(order.id)} className='mx-2 btn btn-danger'>Reject</button>
+                            <button onClick={() => approveOrder(order.id)} className='mx-2 btn btn-success'>Approve</button>
                         </div></>) : (<></>)}
 
                     </div>
                 </div>
             </div>
+
+            {loading ? (<><Loading /></>) : (<></>)}
+
         </div>
     );
 }

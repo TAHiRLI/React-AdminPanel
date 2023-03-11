@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { LoginService } from '../../APIs/Services/LoginService';
 import { ROUTES } from '../../Consts/Routes';
+import Loading from '../Loading';
+
 
 
 
@@ -22,7 +24,7 @@ function JwtRoute({ component: Component, ...rest }) {
         LoginService.CheckAuth(token).then((data)=>{
             if(isMounted.current){
                 setStatusCode(data.status)
-                console.log("data status is", data.status)
+             
             }
      }).catch(error => {
         setStatusCode(401)
@@ -37,10 +39,19 @@ function JwtRoute({ component: Component, ...rest }) {
      }
      },[ ])
 
+     React.useEffect(() => {
+        window.onload = () => {
+            myDispatch({type: "LOADED"})
+        };
+      }, []);
 
-   if(isLoading || statusCode == undefined){
-    return <div> Loading ...</div>
-   }
+// isLoading || statusCode == undefined
+  
+       if(isLoading || statusCode == undefined){
+        return <div> 
+          {/* <Loading/> */}
+       </div>
+       }
    if(statusCode == 200){
       return (
         <Route {...rest} render={(props) =>  (<Component />)} />
