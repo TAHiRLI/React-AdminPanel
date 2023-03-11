@@ -207,7 +207,7 @@ function DoctorList() {
         const selectedPage = data.selected + 1;
         setCurrentPage(selectedPage);
     };
-    const itemsPerPage = 10;
+    const itemsPerPage = 6;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const doctorsToDisplay = doctors.slice(startIndex, endIndex);
@@ -287,7 +287,7 @@ function DoctorList() {
 
                 {
                     doctorsToDisplay.map(doctor => (
-                        <div key={doctor.id} className=" col-lg-3 p-3 " >
+                        <div key={doctor.id} className=" col-lg-4 p-3 " >
 
                             <div className='card h-100'>
                                 <a href={doctor.link}>   <img src={doctor.imageUrl} className="product card-img-top" alt="..." /></a>

@@ -222,23 +222,23 @@ function Dashboard() {
 
 
     return (
-        <div className='container'>
+        <div className='container-fluid'>
             <div className="row">
                 {/* productsPerCategorie */}
                 <div className="col-lg-4 mt-3 mt-lg-0  ">
                     <div className="div card p-2 h-100">
 
-                        <div className="col-lg-6 m-auto">
+                        <div className="col-lg-6 col-md-8  m-auto">
 
-                            <Doughnut data={productsPerCategorieData} />
+                            <Doughnut data={productsPerCategorieData} className="w-full"  />
                         </div>
                     </div>
                 </div>
 
                 {/* Doctor Appointments */}
                 <div className="col-lg-4 mt-3 mt-lg-0  ">
-                    <div className="card p-2">
-                        <Line options={appointemtnsOptions} data={reviewsData} />
+                    <div className="card p-2 h-100">
+                        <Line options={appointemtnsOptions} data={reviewsData}  />
 
                     </div>
                 </div>
@@ -273,7 +273,7 @@ function Dashboard() {
             </div>
 
             <div className="row mt-lg-4">
-                <div className="col-lg-3">
+                <div className="col-xl-3">
                     <div className="card p-3 mt-4">
                         <div className="card-title">
                             <h5>Popular Products</h5>
@@ -304,11 +304,11 @@ function Dashboard() {
                         </table>
                     </div>
                 </div>
-                <div className="col-lg-6 ">
+                <div className="col-xl-6 ">
 
                     <Line options={progressLineOptions} data={generalStatistics} className='h-100' />
                 </div>
-                <div className="col-lg-3">
+                <div className="col-xl-3">
                     <div className="card mt-4 p-3">
                         <div className="card-title">
                             <h5>Most Appointed Doctors</h5>

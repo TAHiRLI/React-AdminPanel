@@ -94,7 +94,7 @@ function BlogList() {
 
         {
           blogsToDisplay.map(blog => (
-            <div className=" col-lg-3 p-3 " >
+            <div className=" col-xl-6 p-3 " >
 
               <div className='card h-100'>
                 <a href={blog.link}>   <img src={blog.imageUrl} className="blog card-img-top" alt="..." /></a>

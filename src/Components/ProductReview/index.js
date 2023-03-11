@@ -87,7 +87,7 @@ function ProductReviewList() {
         const selectedPage = data.selected + 1;
         setCurrentPage(selectedPage);
     };
-    const itemsPerPage = 4;
+    const itemsPerPage = 5;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 

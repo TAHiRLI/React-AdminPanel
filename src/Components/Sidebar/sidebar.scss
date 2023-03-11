@@ -32,3 +32,11 @@
       
     }
   }
+
+  @media (max-width:568px) {
+    .sidebar{
+      &.active{
+        width: 50px;
+      }
+    }
+  }
