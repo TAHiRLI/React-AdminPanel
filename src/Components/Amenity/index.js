@@ -4,7 +4,6 @@ import { Modal, Button } from 'react-bootstrap';
 import { AmenityImageService } from '../../APIs/Services/AmenityImageService';
 import ReactPaginate from 'react-paginate';
 
-
 import Swal from 'sweetalert2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,6 +26,9 @@ function AmenityImageList() {
 
     const [currentPage, setCurrentPage] = React.useState(1);
 
+
+    const [imageSrc, setImageSrc] = React.useState("");
+
     // ==================
     // Funcitons 
     // ==================
@@ -35,10 +37,11 @@ function AmenityImageList() {
     //Create
 
     const initCreateModal = () => {
+        setImageSrc("")
         return invokeCreateModal(!isCreateShow);
     };
 
-    const create_OnSubmit = (data) => { 
+    const create_OnSubmit = (data) => {
         clearErrors();
         let openModal = false;
         console.log(data);
@@ -70,6 +73,7 @@ function AmenityImageList() {
     // Edit
 
     const initEditModal = () => {
+        setImageSrc("")
         return invokeEditModal(!isEditShow);
     };
     const openEditModal = async (id) => {
@@ -168,6 +172,21 @@ function AmenityImageList() {
     const amenityImagesToDisplay = amenityImages.slice(startIndex, endIndex);
     let order = startIndex + 1;
 
+
+    // File Reader
+    const handleFileSelect = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setImageSrc(reader.result);
+          };
+          reader.readAsDataURL(selectedFile);
+        }
+      };
+
+    
+
     // ==================
     // hooks 
     // ==================
@@ -213,7 +232,7 @@ function AmenityImageList() {
                     {
                         amenityImagesToDisplay.map(amenityImage => (
 
-                            <tr  key={amenityImage.id}>
+                            <tr key={amenityImage.id}>
                                 <td>{order++}</td>
                                 <td><img src={amenityImage.imageUrl} width='100' height='70' /></td>
                                 <td className='text-nowrap'>
@@ -274,14 +293,18 @@ function AmenityImageList() {
                                     accept="image/png, image/jpeg"
                                     className='form-control mt-2'
                                     aria-invalid={errors.Image ? "true" : "false"}
-                                    {...register("Image", { required: false })}
+                                    {...register("Image", { required: false,onChange: (e) => {handleFileSelect(e)}, })}
                                 />
                                 {errors.Image && <small className='text-danger' role="alert">{errors?.Image?.message}</small>}
 
                             </div>
 
                             <div className="col">
+                                {imageSrc.length > 0 ? (<>
+                                    <img src={imageSrc} width="100" height="100" className='object-fit-cover' />
+                                </>) : (<>
                                 <img src={editModel.imageUrl} width="100" height="100" className='object-fit-cover' />
+                                </>)}
                             </div>
                         </div>
                     </form>
@@ -296,7 +319,7 @@ function AmenityImageList() {
                 </Modal.Footer>
             </Modal>
             {/* create  modal  */}
-            <Modal  show={isCreateShow}>
+            <Modal show={isCreateShow}>
                 <Modal.Header closeButton onClick={initCreateModal}>
                     <Modal.Title>Create</Modal.Title>
                 </Modal.Header>
@@ -309,17 +332,20 @@ function AmenityImageList() {
                                 <label htmlFor="" className='form-check-label'>Image</label>
                                 <input
                                     type="file"
+                                    
                                     accept="image/png, image/jpeg"
-                                    className='form-control mt-2'
-                                    aria-invalid={errors.Image ? "true" : "false"}
-                                    {...register("Image", { required: true })}
+                                    className="form-control mt-2 "
+                                     aria-invalid={errors.Image ? "true" : "false"}
+                                     {...register("Image", { required: true,onChange: (e) => {handleFileSelect(e)},})}
                                 />
                                 {errors.Image && <small className='text-danger' role="alert">{errors?.Image?.message}</small>}
 
                             </div>
 
                             <div className="col">
-                                <img src={editModel.imageUrl} width="100" height="100" className='object-fit-cover' />
+                                {imageSrc.length > 0 ? (<>
+                                    <img src={imageSrc} width="100" height="100" className='object-fit-cover' />
+                                </>) : (<></>)}
                             </div>
                         </div>
 

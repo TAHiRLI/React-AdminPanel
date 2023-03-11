@@ -31,6 +31,7 @@ function DoctorList() {
     const [isCreateShow, invokeCreateModal] = React.useState(false);
 
     const [currentPage, setCurrentPage] = React.useState(1);
+    const [imageSrc, setImageSrc] = React.useState("");
 
     // ==================
     // Funcitons 
@@ -40,6 +41,8 @@ function DoctorList() {
     //Create
 
     const initCreateModal = () => {
+        setImageSrc("")
+
         return invokeCreateModal(!isCreateShow);
     };
 
@@ -95,6 +98,7 @@ function DoctorList() {
     // Edit
 
     const initEditModal = () => {
+        setImageSrc("")
         return invokeEditModal(!isEditShow);
     };
     const openEditModal = async (id) => {
@@ -207,6 +211,20 @@ function DoctorList() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const doctorsToDisplay = doctors.slice(startIndex, endIndex);
+
+
+     // File Reader
+     const handleFileSelect = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setImageSrc(reader.result);
+          };
+          reader.readAsDataURL(selectedFile);
+        }
+      };
+
 
     // ==================
     // hooks 
@@ -549,8 +567,11 @@ function DoctorList() {
                                 </div>
 
                                 <div className="col">
-                                    <img src={editModel.imageUrl} width="100" height="100" className='object-fit-cover' />
-                                </div>
+                                {imageSrc.length > 0 ? (<>
+                                    <img src={imageSrc} width="100" height="100" className='object-fit-cover' />
+                                </>) : (<>
+                                <img src={editModel.imageUrl} width="100" height="100" className='object-fit-cover' />
+                                </>)} </div>
                             </div>
 
 
@@ -758,15 +779,18 @@ function DoctorList() {
                                         accept="image/png, image/jpeg"
                                         className='form-control mt-2'
                                         aria-invalid={errors.image ? "true" : "false"}
-                                        {...register("image", { required: true })}
+                                        {...register("image", { required: true ,onChange: (e) => {handleFileSelect(e)},})}
                                     />
                                     {errors.image && <small className='text-danger' role="alert">{errors?.image?.message}</small>}
 
                                 </div>
 
                                 <div className="col">
-                                    <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL6WWzOmMEHgtjp2kTkkRhsusHBmNAVVFsfqwfSqAh&s' width="100" height="100" className='object-fit-cover' />
-                                </div>
+                              
+                                {imageSrc.length > 0 ? (<>
+                                    <img src={imageSrc} width="100" height="100" className='object-fit-cover' />
+                                </>) : (<></>)}
+                              </div>
                             </div>
 
 

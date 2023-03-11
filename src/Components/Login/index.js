@@ -35,7 +35,7 @@ function Login() {
     };
     if(isSucceed){
         return (
-            <Redirect to={ROUTES.DASHBOARD.MAIN_PATH}/>
+            <Redirect to={ROUTES.DASHBOARD}/>
         )
     }
 

@@ -26,7 +26,7 @@ function SliderList() {
     const [isCreateShow, invokeCreateModal] = React.useState(false);
 
     const [currentPage, setCurrentPage] = React.useState(1);
-
+    const [imageSrc, setImageSrc] = React.useState("");
     // ==================
     // Funcitons 
     // ==================
@@ -35,6 +35,8 @@ function SliderList() {
     //Create
 
     const initCreateModal = () => {
+        setImageSrc("")
+
         return invokeCreateModal(!isCreateShow);
     };
 
@@ -77,6 +79,7 @@ function SliderList() {
     // Edit
 
     const initEditModal = () => {
+        setImageSrc("")
         return invokeEditModal(!isEditShow);
     };
     const openEditModal = async (id) => {
@@ -181,6 +184,20 @@ function SliderList() {
     const endIndex = startIndex + itemsPerPage;
     const slidersToDisplay = sliders.slice(startIndex, endIndex);
     let order = startIndex + 1;
+
+    // File Reader
+    const handleFileSelect = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setImageSrc(reader.result);
+          };
+          reader.readAsDataURL(selectedFile);
+        }
+      };
+
+    
 
     // ==================
     // hooks 
@@ -364,15 +381,18 @@ function SliderList() {
                                     accept="image/png, image/jpeg"
                                     className='form-control mt-2'
                                     aria-invalid={errors.Image ? "true" : "false"}
-                                    {...register("Image", { required: false })}
+                                    {...register("Image", { required: false ,onChange: (e) => {handleFileSelect(e)},})}
                                 />
                                 {errors.Image && <small className='text-danger' role="alert">{errors?.Image?.message}</small>}
 
                             </div>
 
                             <div className="col">
-                                <img src={editModel.imageUrl} width="100" height="100" className='object-fit-cover' />
-                            </div>
+                            {imageSrc.length > 0 ? (<>
+                                    <img src={imageSrc} width="150" height="100" className='object-fit-cover' />
+                                </>) : (<>
+                                <img src={editModel.imageUrl} width="150" height="100" className='object-fit-cover' />
+                                </>)} </div>
                         </div>
                     </form>
                 </Modal.Body>
@@ -461,14 +481,16 @@ function SliderList() {
                                     accept="image/png, image/jpeg"
                                     className='form-control mt-2'
                                     aria-invalid={errors.Image ? "true" : "false"}
-                                    {...register("Image", { required: true })}
+                                    {...register("Image", { required: true,onChange: (e) => {handleFileSelect(e)}, })}
                                 />
                                 {errors.Image && <small className='text-danger' role="alert">{errors?.Image?.message}</small>}
 
                             </div>
 
                             <div className="col">
-                                <img src={editModel.imageUrl} width="100" height="100" className='object-fit-cover' />
+                            {imageSrc.length > 0 ? (<>
+                                    <img src={imageSrc} width="100" height="100" className='object-fit-cover' />
+                                </>) : (<></>)}
                             </div>
                         </div>
 

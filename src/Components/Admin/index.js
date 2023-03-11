@@ -22,6 +22,7 @@ function AdminList() {
     const [isCreateShow, invokeCreateModal] = React.useState(false);
 
     const [currentPage, setCurrentPage] = React.useState(1);
+    const [imageSrc, setImageSrc] = React.useState("");
 
     // ==================
     // Funcitons 
@@ -29,7 +30,9 @@ function AdminList() {
     //Create
 
     const initCreateModal = () => {
+        
         clearErrors();
+        setImageSrc("")
         setValue("Id", "");
         setValue("Fullname", "");
         setValue("email", "");
@@ -75,6 +78,7 @@ function AdminList() {
 
     // Edit
     const initEditModal = () => {
+        setImageSrc("")
         return invokeEditModal(!isEditShow);
     };
     const openEditModal = async (id) => {
@@ -139,6 +143,19 @@ function AdminList() {
     const usersToDisplay = users.slice(startIndex, endIndex);
 
     let order = startIndex + 1;
+
+
+    // File Reader
+    const handleFileSelect = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setImageSrc(reader.result);
+          };
+          reader.readAsDataURL(selectedFile);
+        }
+      };
 
     // ==================
     // hooks 
@@ -321,15 +338,18 @@ function AdminList() {
                                     accept="image/png, image/jpeg"
                                     className='form-control mt-2'
                                     aria-invalid={errors.image ? "true" : "false"}
-                                    {...register("image", { required: false })}
+                                    {...register("image", { required: false,onChange: (e) => {handleFileSelect(e)},  })}
                                 />
                                 {errors.image && <small className='text-danger' >{errors?.image?.message}</small>}
 
                             </div>
 
                             <div className="col">
+                            {imageSrc.length > 0 ? (<>
+                                    <img src={imageSrc} width="100" height="100" className='object-fit-cover' />
+                                </>) : (<>
                                 <img src={editModel.imageUrl} width="100" height="100" className='object-fit-cover' />
-                            </div>
+                                </>)} </div>
                         </div>
                     </form>
                 </Modal.Body>
@@ -426,15 +446,16 @@ function AdminList() {
                                     accept="image/png, image/jpeg"
                                     className='form-control mt-2'
                                     aria-invalid={errors.image ? "true" : "false"}
-                                    {...register("image", { required: true })}
+                                    {...register("image", { required: true ,onChange: (e) => {handleFileSelect(e)}, })}
                                 />
                                 {errors.image && <small className='text-danger' >{errors?.image?.message}</small>}
 
                             </div>
 
                             <div className="col">
-                                <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL6WWzOmMEHgtjp2kTkkRhsusHBmNAVVFsfqwfSqAh&s' width="100" height="100" className='object-fit-cover' />
-                            </div>
+                            {imageSrc.length > 0 ? (<>
+                                    <img src={imageSrc} width="100" height="100" className='object-fit-cover' />
+                                </>) : (<> </>)}</div>
                         </div>
 
 
