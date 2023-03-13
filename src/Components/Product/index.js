@@ -98,6 +98,9 @@ function ProductList() {
       .finally(() => {
         invokeCreateModal(openModal);
         getAllProducts();
+        setValue("PosterImage",[]);
+        setImageSrc("")
+        setValue("OtherImages",[])
       });
   };
 
@@ -168,7 +171,9 @@ function ProductList() {
         reset();
         getAllProducts();
         invokeEditModal(stayOpened);
-
+        setValue("PosterImage",[]);
+        setImageSrc("")
+        setValue("OtherImages",[])
       });
   };
 

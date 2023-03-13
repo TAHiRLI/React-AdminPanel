@@ -66,6 +66,8 @@ function AmenityImageList() {
             .finally(() => {
                 invokeCreateModal(openModal);
                 getAllAmenityImages();
+                setValue("Image",[]);
+                setImageSrc("")
             });
     };
 
@@ -116,6 +118,8 @@ function AmenityImageList() {
             .finally(() => {
                 invokeEditModal(openModal);
                 getAllAmenityImages();
+                setValue("Image",[]);
+                setImageSrc("")
             });
     };
 

@@ -91,6 +91,8 @@ function DoctorList() {
                 invokeCreateModal(openModal);
                 getAllDoctors();
                 getAllDepartments();
+                setValue("image", []);
+                setImageSrc("")
             });
     };
 
@@ -156,6 +158,8 @@ function DoctorList() {
                 invokeEditModal(openModal);
                 getAllDoctors();
                 getAllDepartments();
+                setValue("image", []);
+                setImageSrc("")
             });
     };
 

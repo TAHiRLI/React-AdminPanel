@@ -72,6 +72,8 @@ function SliderList() {
             .finally(() => {
                 invokeCreateModal(openModal);
                 getAllSliders();
+                setValue("Image", []);
+                setImageSrc("")
             });
     };
 
@@ -129,6 +131,8 @@ function SliderList() {
             .finally(() => {
                 invokeEditModal(openModal);
                 getAllSliders();
+                setValue("Image", []);
+                setImageSrc("")
             });
     };
 
@@ -188,6 +192,7 @@ function SliderList() {
     // File Reader
     const handleFileSelect = (event) => {
         const selectedFile = event.target.files[0];
+     
         if (selectedFile) {
           const reader = new FileReader();
           reader.onloadend = () => {
@@ -316,7 +321,7 @@ function SliderList() {
                         {/* Title */}
                         <div className="my-3">
                             <input
-                                placeholder=" Tilte"
+                                placeholder=" Title"
                                 className='form-control'
                                 aria-invalid={errors.title ? "true" : "false"}
                                 {...register("title", { required: "title field is required", maxLength: Title_maxlength })}
