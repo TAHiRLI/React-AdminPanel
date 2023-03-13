@@ -20,5 +20,8 @@ export const ROUTES ={
     AMENITY_iMAGES: "/AmenityImages",
     VALUES:"/Values",
     BLOG_CATEGORIES:"/BlogCategoires",
-    SERVICES:"/Services"
+    SERVICES:"/Services",
+    HUBS:{
+        MEETING_HUB:"https://localhost:7192/meetingHub"
+    }
 }
