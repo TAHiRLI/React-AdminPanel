@@ -44,6 +44,16 @@ async deleteDoctor(id){
         }});
 }
 
+async getExcelFile(){
+    return await this.downloadExcelFile(`Doctors/ExcelFile`, {
+        headers:{
+            authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
+        },
+        responseType: 'blob' 
+    
+    })
+}
+
 }
 
 

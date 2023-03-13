@@ -12,7 +12,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Swal from 'sweetalert2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faSquarePlus, faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faSquarePlus, faPencil, faTrashCan, faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 
 function DoctorList() {
@@ -225,6 +225,9 @@ function DoctorList() {
         }
       };
 
+      const handleFileDownload = React.useCallback(()=>{
+        DoctorService.getExcelFile();
+      })
 
     // ==================
     // hooks 
@@ -281,6 +284,7 @@ function DoctorList() {
     return (
         <div className='d-flex justify-content-center flex-column '>
             <div className='text-end'>
+                <Button onClick={handleFileDownload} className='bg-success mx-2 btn text-light'  ><FontAwesomeIcon icon={faFileArrowDown} /></Button>
                 <Button onClick={initCreateModal}><FontAwesomeIcon icon={faSquarePlus} /></Button>
             </div>
             <div className="products row mt-2 gy-4">
