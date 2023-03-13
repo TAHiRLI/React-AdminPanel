@@ -21,6 +21,7 @@ import OrderDetails from '../OrderDetails';
 import ProductList from '../Product';
 import ProductCategoryList from '../ProductCategory';
 import ProductReviewList from '../ProductReview';
+import ServiceList from '../Service';
 import SettingList from '../Setting/Index';
 import SliderList from '../Slider';
 import SubscribtionList from '../Subscribtions';
@@ -53,6 +54,7 @@ function Routes() {
                 <JwtRoute path={ROUTES.SUBSCRIBERS} component={() => <Layout content={SubscribtionList} />} exact />
                 <JwtRoute path={ROUTES.AMENITY_iMAGES} component={() => <Layout content={AmenityImageList} />} exact />
                 <JwtRoute path={ROUTES.VALUES} component={() => <Layout content={ValueList} />} exact />
+                <JwtRoute path={ROUTES.SERVICES} component={() => <Layout content={ServiceList} />} exact />
                 
             </Switch>
         </Router>

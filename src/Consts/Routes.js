@@ -19,5 +19,6 @@ export const ROUTES ={
     SUBSCRIBERS:"/Subscriptions",
     AMENITY_iMAGES: "/AmenityImages",
     VALUES:"/Values",
-    BLOG_CATEGORIES:"/BlogCategoires"
+    BLOG_CATEGORIES:"/BlogCategoires",
+    SERVICES:"/Services"
 }

@@ -568,7 +568,7 @@ function DoctorList() {
                                         accept="image/png, image/jpeg"
                                         className='form-control mt-2'
                                         aria-invalid={errors.image ? "true" : "false"}
-                                        {...register("image", { required: false })}
+                                        {...register("image", { required: false ,onChange: (e) => {handleFileSelect(e)}, })}
                                     />
                                     {errors.image && <small className='text-danger' role="alert">{errors?.image?.message}</small>}
 

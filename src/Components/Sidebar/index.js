@@ -6,7 +6,7 @@ import { ROUTES } from '../../Consts/Routes';
 import { useGeneralContext } from '../Context/GeneralContext';
 import "./sidebar.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxOpen, faDolly, faGear, faList, faCommentDots, faNewspaper, faSitemap, faUserNurse, faUsers, faUserTie, faEnvelopesBulk, faImages, faAt, faImage, faLightbulb, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen, faDolly, faGear, faList, faCommentDots, faNewspaper, faSitemap, faUserNurse, faUsers, faUserTie, faEnvelopesBulk, faImages, faAt, faImage, faLightbulb, faChartLine, faHandHoldingMedical } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
 
@@ -83,6 +83,9 @@ function Sidebar() {
                         </NavLink>
                         <NavLink to={ROUTES.VALUES} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faLightbulb} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Values</span>
+                        </NavLink>
+                        <NavLink to={ROUTES.SERVICES} className="nav-link align-middle  text-light">
+                            <FontAwesomeIcon icon={faHandHoldingMedical} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Services</span>
                         </NavLink>
                         <NavLink to={ROUTES.USERS} className="nav-link align-middle  text-light">
                             <FontAwesomeIcon icon={faUsers} className="pe-2 sidebar-icon" /> <span className="ms-1 d-none d-sm-inline">Users</span>
