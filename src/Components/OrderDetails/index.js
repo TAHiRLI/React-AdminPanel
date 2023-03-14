@@ -8,9 +8,7 @@ import Loading from '../Loading';
 
 
 function OrderDetails() {
-    const { isLoading } = useSelector(state => state);
-    const myDispatch = useDispatch();
-
+ 
     const location = useLocation();
     let id = location.state.id;
 
@@ -100,7 +98,7 @@ function OrderDetails() {
     return (
         <div className='container-fluid'>
             <div className="row">
-                <div className="col-md-8">
+                <div className="col-xl-8">
                     <table className='table table-light overflow-scroll'>
                         <thead>
                             <tr>
@@ -138,8 +136,8 @@ function OrderDetails() {
                         </tbody>
                     </table>
                 </div>
-                <div className="col-md-4 bg-success p-2 rounded">
-                    <div className="card">
+                <div className="col-xl-4 bg-success p-2 rounded">
+                    <div className="card overflow-auto">
                         <div className="card-header">
                             <p className="card-title text-center h3">Order Info</p>
                         </div>

@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faFileWaveform } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../APIs/Services/UserService';
 import { ROUTES } from '../../Consts/Routes';
-import $ from "jquery"
+import { Button } from 'react-bootstrap';
+import $ from "jquery";
 // Signalr 
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
@@ -45,7 +47,7 @@ function UserList() {
     });
   }, []);
   React.useEffect(() => {
-     const newConnection = new HubConnectionBuilder()
+    const newConnection = new HubConnectionBuilder()
       .withUrl(ROUTES.HUBS.MEETING_HUB)
       .withAutomaticReconnect()
       .build();
@@ -56,19 +58,20 @@ function UserList() {
   React.useEffect(() => {
     if (connection) {
       connection.start()
-          .then(result => {
-              console.log('Connected!');
-            connection.on("setAsOnline",(id)=>{
-              $(`#user-${id}`).addClass("bg-success");
-              $(`#user-${id}`).removeClass("bg-secondary");
-            })
+        .then(result => {
+          console.log('Connected!');
+          connection.on("setAsOnline", (id) => {
+            $(`#user-${id}`).addClass("bg-success");
+            $(`#user-${id}`).removeClass("bg-secondary");
+          });
 
-            connection.on("setAsOffline",(id)=>{
-              $(`#user-${id}`).removeClass("bg-success");
-              $(`#user-${id}`).addClass("bg-secondary");
-            })
+          connection.on("setAsOffline", (id) => {
+            $(`#user-${id}`).removeClass("bg-success");
+            $(`#user-${id}`).addClass("bg-secondary");
+          });
 
-          })}
+        });
+    }
   }, [connection]);
 
   React.useEffect(() => {
@@ -92,6 +95,7 @@ function UserList() {
             <th>Phone</th>
             <th>Role</th>
             <th>Status</th>
+            <th>Examinations</th>
           </tr>
         </thead>
         <tbody>
@@ -105,8 +109,18 @@ function UserList() {
                 <td>{user.email}</td>
                 <td>{user.phoneNumber ?? "Not defined"}</td>
                 <td>{user.isAdmin == null ? "Doctor" : user.isAdmin == "False" ? "User" : "Admin"}</td>
-                <td><div id={`user-${user.id}`} className={`badge bg-${user.connectionId!=null?"success":"secondary"}`}>{user.connectionId!=null?"Online":"Offline"}</div></td>
+                <td className='align-middle'><div id={`user-${user.id}`} className={`badge bg-${user.connectionId != null ? "success" : "secondary"}`}>{user.connectionId != null ? "Online" : "Offline"}</div></td>
+                <td className='text-center align-middle'>
 
+                  <Link to={{
+                    pathname: ROUTES.USER_EXAMINATIONS,
+                    state: { id: user.id }
+                  }} className="nav-link align-middle px-0 ">
+                    <Button>
+                      <FontAwesomeIcon icon={faFileWaveform} />
+                    </Button>
+                  </Link>
+                </td>
               </tr>
 
 

@@ -21,6 +21,7 @@ export const ROUTES ={
     VALUES:"/Values",
     BLOG_CATEGORIES:"/BlogCategoires",
     SERVICES:"/Services",
+    USER_EXAMINATIONS:"/UserServices",
     HUBS:{
         MEETING_HUB:"https://localhost:7192/meetingHub"
     }
