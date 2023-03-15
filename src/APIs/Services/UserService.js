@@ -47,6 +47,21 @@ class userService extends HttpClient {
         });
     }
 
+    async ban(id) {
+        return await this.get(`Users/Ban/${id}`, {
+            headers: {
+                authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token"))}`
+            }
+        });
+    }
+    async removeBan(id) {
+        return await this.get(`Users/RemoveBan/${id}`, {
+            headers: {
+                authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token"))}`
+            }
+        });
+    }
+
     // Examinations 
     async editExamination(id, body) {
         return await this.put(`MedicalExaminations`, id, body,

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
+
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faFileWaveform } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faFileWaveform, faShield } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../APIs/Services/UserService';
 import { ROUTES } from '../../Consts/Routes';
 import { Button } from 'react-bootstrap';
@@ -23,6 +25,43 @@ function UserList() {
   // ==================
   // Funcitons 
   // ==================
+
+
+  //Ban User 
+
+  const banUser = React.useCallback((id) => {
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do You Want To Ban This User?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+  }).then((result) => {
+      if (result.isConfirmed) {
+        UserService.ban(id)
+        .then(() => {
+          getAllUsers();
+          Swal.fire(
+            'Banned!',
+            'This User Is Banned.',
+            'success'
+        );
+        });
+         
+      }
+  })
+   
+  });
+
+  const removeBan = React.useCallback((id) => {
+    UserService.removeBan(id)
+    .then(() => {
+      getAllUsers();
+    });
+  });
 
 
   //Pagination
@@ -96,19 +135,20 @@ function UserList() {
             <th>Role</th>
             <th>Status</th>
             <th>Examinations</th>
+            <th>Ban</th>
           </tr>
         </thead>
         <tbody>
           {
             usersToDisplay.map(user => (
 
-              <tr className='text-nowrap' key={user.id}>
+              <tr className='text-nowrap align-middle' key={user.id}>
                 <td>{order++}</td>
                 <td><img src={user.imageUrl} width='70' height='70' className='rounded-circle' /></td>
                 <td>{user.userName}</td>
                 <td>{user.email}</td>
                 <td>{user.phoneNumber ?? "Not defined"}</td>
-                <td>{user.isAdmin == null ? "Doctor" : user.isAdmin == "False" ? "User" : "Admin"}</td>
+                <td>{user.isAdmin == null ? "Doctor" : user.isAdmin == false ? "User" : "Admin"}</td>
                 <td className='align-middle'><div id={`user-${user.id}`} className={`badge bg-${user.connectionId != null ? "success" : "secondary"}`}>{user.connectionId != null ? "Online" : "Offline"}</div></td>
                 <td className='text-center align-middle'>
 
@@ -120,6 +160,18 @@ function UserList() {
                       <FontAwesomeIcon icon={faFileWaveform} />
                     </Button>
                   </Link>
+                </td>
+                <td className=' align-middle'>
+
+                  {user.isBanned ? (<>
+                    <button onClick={()=>removeBan(user.id)} className='btn btn-outline-dark'>
+                      <FontAwesomeIcon icon={faShield} className='text-danger' />
+                    </button>
+                  </>) : (<>
+                    <button onClick={()=>banUser(user.id)} className='btn btn-outline-dark'>
+                      <FontAwesomeIcon icon={faShield} className='text-success' />
+                    </button>
+                  </>)}
                 </td>
               </tr>
 
