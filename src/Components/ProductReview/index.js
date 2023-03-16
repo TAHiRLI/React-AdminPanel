@@ -158,7 +158,7 @@ function ProductReviewList() {
                                 </td>
                                 <td className='d-flex justify-content-end float-none'>
                                     {review.isApproved == false ? (
-                                        <button onClick={() => ApproveReview(review.id)} className='btn btn-info mx-2 ' ><i className='zmdi zmdi-edit'></i></button>
+                                        <button onClick={() => ApproveReview(review.id)} className='btn btn-success mx-2 ' ><i className='zmdi zmdi-check'></i></button>
                                     ) : (<></>)}
                                     <button onClick={() => RejectReview(review.id)} className='btn btn-danger ' ><i className='zmdi zmdi-delete'></i></button>
                                 </td>

@@ -114,7 +114,7 @@ function DoctorList() {
     const edit_OnSubmit = (data) => {
         let openModal = false;
         clearErrors();
-        console.log(data);
+        console.log("FORM data",data);
 
         const formData = new FormData();
         formData.append("fullname", data.fullname);

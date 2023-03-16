@@ -32,7 +32,7 @@ function OrderDetails() {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Yes, Approve it!'
             });
 
             if (result.isConfirmed) {
@@ -66,7 +66,7 @@ function OrderDetails() {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Yes, Reject it!'
             });
 
             if (result.isConfirmed) {

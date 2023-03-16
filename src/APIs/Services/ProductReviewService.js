@@ -30,7 +30,7 @@ async reject (id){
 }
 
 async approve (id){
-    return await this.put("ProductReviews/Approve",id, {
+    return await this.put("ProductReviews/Approve",id, null,{
         headers:{
             authorization: `Bearer ${JSON.parse(sessionStorage.getItem("token")) }`
         }});

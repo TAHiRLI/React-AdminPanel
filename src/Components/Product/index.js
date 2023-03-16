@@ -117,6 +117,8 @@ function ProductList() {
   };
   const openEditModal = async (id) => {
     clearErrors();
+    setMultiImageSrc([])
+    setImageSrc("");
 
     invokeEditModal(true);
     let product = await ProductService.getById(id);
@@ -788,7 +790,7 @@ function ProductList() {
 
             {/* Stock status */}
             <div className="my-2">
-              <label htmlFor="" className='form-check-label'>Stock Status12</label>
+              <label htmlFor="" className='form-check-label'>Stock Status</label>
 
               <input
                 type="checkbox"
@@ -856,7 +858,7 @@ function ProductList() {
             <div className="my-4 row align-items-center ">
               <div className="col-3">
 
-                <label htmlFor="" className='form-check-label'>Stock Status</label>
+                <label htmlFor="" className='form-check-label'>Other Images</label>
                 <input
                   type="file"
                   multiple
