@@ -1,70 +1,93 @@
-# Getting Started with Create React App
+# Medlab - Admin
+### Author: Tahir Tahirli
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![N|Solid](public/Images/Medlab%20Admin%20-%20Brave%2021_03_2023%2014_51_01.png)
 
-## Available Scripts
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
-In the project directory, you can run:
+Medlab admin enables admin users to do CRUD operations of [Medlab](https://github.com/TAHiRLI/FinalProject) web application. It uses the .net API project to handle backend side processes. My main aim was to test my React Js skills and learning JWT token security system deeply.
 
-### `npm start`
+### Dashboard
+- ✔️ Reviews chart - shows number of approved/rejected rewiews
+- ✔️ Sales Summary - shows general info about sales 
+- ✔️ Main Chart - shows total income from sales and Appointments
+- ✔️ Donought -  Shows top 3 most sold product categories
+- ✔️ Most Popular Doctors/Products
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### CRUD operations
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- ✔️ Amenity Images
+- ✔️ Blog Categoires
+- ✔️ Blogs
+- ✔️ Contact messages
+- ✔️ Departments
+- ✔️ Doctors
+- ✔️ Medical Examinations 
+- ✔️ Orders
+- ✔️ Product Categories
+- ✔️ Product Reviews
+- ✔️ Products
+- ✔️ Services
+- ✔️ Settings
+- ✔️ Sliders
+- ✔️ Subscriptions
+- ✔️ Users - Admin Users
+- ✔️ Values
 
-### `npm test`
+### Contact Messages
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Admins can reply contact messages to the emails of the stored user email.
 
-### `npm run build`
+## Tech
+#### - Frontend
+- 🟢 [Html], [CSS], [Javascript]
+- 🟢 [Scss] -  CSS extension language.
+- 🟢 [React Js] - Feature-packed frontend toolkit.
+- 🟢 [jQuery] - For faster js development.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### - Backend
+- 🟢 [Asp .Net Core 6.0] - ASP.NET Core is a cross-platform framework for building modern apps.
+- 🟢 [Asp .Net Web Api] - Building RESTful applications on the .NET Framework.
+- 🟢 [Repository Pattern] - A Pattern that can be integrated into an application no matter what kind of database
+- 🟢  [Entity framework core] - Entity Framework is an Object/Relational Mapping (O/RM) framework
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Plugins
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Medlab is currently extended with the following plugins.
 
-### `npm run eject`
+| Plugin | Description |
+| ------ | ------ |
+| [SignalR](https://dotnet.microsoft.com/en-us/apps/aspnet/signalr) | Used for real-time applicatios|
+| [React-Paginate](https://www.npmjs.com/package/react-paginate)|Used for pagination in React |
+| [React-hook-form](https://www.npmjs.com/package/react-hook-form)|Used to handle form inputs |
+| [React-router-dom](https://www.npmjs.com/package/react-router-dom)|Used for routing in React |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contact Me
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| # | |
+| ------ | ------ |
+|📱 Phone | +994 077 547 49 48 |
+|📧 Email | tahirlitahirr@gmail.com|
+|📧 Email | tahiret@code.edu.az|
+|📄 Linked In|<https://www.linkedin.com/in/tahirtahirli/>|
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## More Photos
+![N|Solid](public/Images/Medlab%20Admin%20-%20Brave%2021_03_2023%2014_51_30.png)
+![N|Solid](public/Images/Medlab%20Admin%20-%20Brave%2021_03_2023%2014_51_46.png)
+![N|Solid](public/Images/Medlab%20Admin%20-%20Brave%2021_03_2023%2014_57_31.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+   [Scss]: <https://sass-lang.com/>
+   [React Js]: <https://react.dev/>
+   [Asp .Net Core 6.0]: <https://learn.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-6.0?view=aspnetcore-7.0>
+   [Asp .Net MVC]: <https://dotnet.microsoft.com/en-us/apps/aspnet/mvc>
+   [Asp .Net Web Api]: <https://dotnet.microsoft.com/en-us/apps/aspnet/apis>
+   [Repository Pattern]: <https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design>
+   [Entity framework core]: <https://learn.microsoft.com/en-us/ef/>
+   [Bootstrap]: <https://getbootstrap.com/>
+   [Html]: <https://developer.mozilla.org/en-US/docs/Glossary/HTML5>
+   [CSS]: <https://developer.mozilla.org/en-US/docs/Web/CSS>
+   [Javascript]: <https://www.javascript.com/>
+   [WebRTC]: <https://webrtc.org/>
+  [jQuery]: <http://jquery.com>
